@@ -5,4 +5,4 @@ elixir:
 otp_release:
   - 19.0
 env:
-  TOT_TOKEN = "test-token"
+  - TOT_TOKEN = "test-token"
