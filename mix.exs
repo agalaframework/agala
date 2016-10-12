@@ -45,10 +45,10 @@ defmodule Agala.Mixfile do
   end
   defp package do
     [
-      maintainers: ["Dmitry Rubinstein"],
+      maintainers: ["Dmitry Rubinstein", "Vladimir Barsukov"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/virviil/agala"},
-      files: ~w(mix.exs README* CHANGELOG* LICENSE* lib)
+      files: ~w(mix.exs README* lib)
     ]
   end
 end

@@ -1,6 +1,6 @@
-# Sup
+# Agala
 
-**TODO: Add description**
+Full-featured Telegram bot framework.
 
 ## Installation
 
