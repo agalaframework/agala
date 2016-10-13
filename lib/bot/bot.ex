@@ -5,10 +5,8 @@ defmodule Agala.Bot do
   @default_router Agala.Router.Direct
 
   def process_url(url) do
-    "https://api.telegram.org/bot" <> token <> "/" <> url
+    "https://api.telegram.org/bot" <> Agala.get_token <> "/" <> url
   end
-
-  defp token, do: System.get_env("TOT_TOKEN")
 
   def getUpdates(%{timeout: timeout, offset: offset}) do
     exec_cmd("getUpdates", %{timeout: timeout, offset: offset})
