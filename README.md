@@ -31,7 +31,7 @@ The full configuration looks like this:
 config :agala,
   token_env: "TELEGRAM_TOKEN",
   request_timeout: 100,
-  router: MyApp.SuperRoter,
+  router: MyApp.SuperRouter,
   handler: MyApp.SuperHandler.
 ```
 
