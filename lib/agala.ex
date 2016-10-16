@@ -2,28 +2,32 @@ defmodule Agala do
   use Application
   require Logger
 
+  @moduledoc """
+  Main framework module. Copy readme from github here
+  """
 
-  @default_timeout 1
+  @default_timeout 100
   @default_router Agala.Router.Direct
   @default_handler Agala.Handler.Echo
 
+  @doc """
+  Main function, starts the supervision tree
+  """
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
     token = get_token
     Logger.info("Starting Agala server...")
     Logger.info("Defined token: #{token}")
-    # Define workers and child supervisors to be supervised
     children = [
-      # Starts a worker by calling: Agala.Worker.start_link(arg1, arg2, arg3)
-      # worker(Agala.Worker, [arg1, arg2, arg3]),
-      worker(Agala.Bot.Poller, [%{timeout: get_timeout, offset: 0}]),
+      worker(Agala.Bot.Poller, [
+        %{timeout: get_timeout, offset: 0}
+        |> set_proxy
+      ]),
       supervisor(Task.Supervisor, [[name: Agala.Bot.TasksSupervisor]]),
       supervisor(get_router(), [])
     ]
 
-    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one]
     Supervisor.start_link(children, opts)
   end
@@ -39,6 +43,31 @@ defmodule Agala do
   def get_handler do
     Application.get_env(:agala, :handler) || @default_handler
   end
+
+  def get_proxy do
+    Application.get_env(:agala, :proxy) || nil
+  end
+
+  def get_proxy_auth do
+    Application.get_env(:agala, :proxy_auth) || nil
+  end
+
+  defp set_proxy(opts) do
+    resolve_proxy(opts, get_proxy, get_proxy_auth)
+  end
+  defp resolve_proxy(opts, nil, _auth) do
+    opts
+  end
+  defp resolve_proxy(opts, proxy, nil) do
+    opts
+    |> Map.put(:proxy, proxy)
+  end
+  defp resolve_proxy(opts, proxy, proxy_auth) do
+    opts
+    |> Map.put(:proxy, proxy)
+    |> Map.put(:proxy_auth, auth)
+  end
+
 
   def get_token do
     token_name = Application.get_env(:agala, :token_env)

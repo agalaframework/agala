@@ -25,7 +25,6 @@ defmodule Agala.Bot do
   }) do
     offset
   end
-
   def resolve_updates({
     _offset,
     {
@@ -40,11 +39,10 @@ defmodule Agala.Bot do
     result
     |> process_messages
   end
-
-  def resolve_updates({ offset, { :ok, %HTTPoison.Response { status_code: 404 } } } ) do
+  def resolve_updates({ offset, { :ok, %HTTPoison.Response { status_code: status_code } } } ) do
+    Logger.error("HTTP response ended with status code #{status code}")
     offset
   end
-
   def resolve_updates({ offset, { :error, err }}) do
     Logger.error("#{inspect err}")
     offset
