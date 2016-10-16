@@ -3,7 +3,7 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "0.1.1",
+     version: "0.1.2",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -48,7 +48,7 @@ defmodule Agala.Mixfile do
       maintainers: ["Dmitry Rubinstein", "Vladimir Barsukov"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/virviil/agala"},
-      files: ~w(mix.exs README* lib)
+      files: ~w(mix.exs README* CHANGELOG* lib)
     ]
   end
 end
