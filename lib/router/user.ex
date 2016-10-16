@@ -2,8 +2,6 @@ defmodule Agala.Router.User do
   use Supervisor
   require Logger
 
-  @default_handler Agala.Handler.Echo
-
   def start_link do
     Supervisor.start_link(__MODULE__, [], name: Agala.Router.User)
   end
