@@ -81,7 +81,7 @@ defmodule Agala do
   defp resolve_proxy(opts, proxy, proxy_auth) do
     opts
     |> Map.put(:proxy, proxy)
-    |> Map.put(:proxy_auth, auth)
+    |> Map.put(:proxy_auth, proxy_auth)
   end
 
 
