@@ -64,7 +64,6 @@ defmodule Agala.Bot do
   def process_messages([message]=[%{"update_id"=>offset}]) do
     process_message(message)
     #last message, so the offset is moving to +1
-    Logger.debug("Update_id changed to #{offset+1}")
     offset + 1
   end
 
@@ -78,6 +77,5 @@ defmodule Agala.Bot do
       Agala.get_router().route(message)
     end)
   end
-
 end
 

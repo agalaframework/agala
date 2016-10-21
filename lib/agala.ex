@@ -6,7 +6,7 @@ defmodule Agala do
   Main framework module. Copy readme from github here
   """
 
-  @default_timeout 100
+  @default_timeout 3000
   @default_router Agala.Router.Direct
   @default_handler Agala.Handler.Echo
 
