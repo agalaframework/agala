@@ -7,3 +7,9 @@ $ cd installer
 $ MIX_ENV=prod mix archive.build
 $ mix archive.install
 ```
+ or
+
+```bash
+$ bin/build
+```
+
