@@ -19,5 +19,14 @@ erl_crash.dump
 # Ignore environment files
 *.env
 
-# Ignore scripts
-/bin
+# Ignore script to run testing server
+/bin/run
+
+
+# Install repository
+/installer/_build
+/installer/cover
+/installer/deps
+/installer/doc
+/installer/erl_crash.dump
+
