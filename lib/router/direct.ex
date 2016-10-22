@@ -21,4 +21,3 @@ defmodule Agala.Router.Direct do
   end
 
 end
-

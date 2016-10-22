@@ -25,4 +25,3 @@ defmodule Agala.Bot.Poller do
   end
 
 end
-
