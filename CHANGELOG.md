@@ -1,3 +1,10 @@
+### 1.0.0
+
+#### Features
+
+* Extracted Router to separate behaviour
+* Added generator to scaffolding Agala bots
+
 ### 0.1.2
 
 #### Features
