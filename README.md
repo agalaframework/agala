@@ -3,7 +3,25 @@
 
 Full-featured Telegram bot framework.
 
-## Installation
+## Installation via Mix
+
+You can scaffold your new bot with simple commands! To do this:
+
+  1. Install archive to your local Mix:
+
+    ```bash
+    $ mix archive.install
+    https://github.com/Virviil/agala/releases/download/v1.0.0/agala_new-1.0.0.ez
+    ```
+  2. Simply run
+    
+    ```bash
+    $ mix agala.new
+    ```
+
+    to see next instructions.
+
+## Installation via Hex
 
 The package is [available in Hex](https://hex.pm/packages/agala), and can be installed as:
 
