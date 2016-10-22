@@ -128,13 +128,13 @@ defmodule Mix.Tasks.Agala.New do
   end
 
   defp print_mix_info(path, extra) do
-    steps = ["$ cd #{path}"] ++ extra ++ ["$ mix agala.server"]
+    steps = ["$ cd #{path}"] ++ extra ++ ["$ iex -S mix"]
 
     Mix.shell.info """
     We are all set! Run your Agala application:
     #{Enum.join(steps, "\n    ")}
     You can also run your app inside IEx (Interactive Elixir) as:
-      $ iex -S mix agala.server
+      $ iex -S mix
       """
   end
 
