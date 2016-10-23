@@ -10,7 +10,7 @@ You can scaffold your new bot with simple commands! To do this:
 
     ```bash
     $ mix archive.install
-    https://github.com/Virviil/agala/releases/download/v1.0.0/agala_new-1.0.0.ez
+    https://github.com/Virviil/agala/releases/download/v1.0.1/agala_new-1.0.1.ez
     ```
   2. Simply run
     
@@ -28,7 +28,7 @@ The package is [available in Hex](https://hex.pm/packages/agala), and can be ins
 
     ```elixir
     def deps do
-      [{:agala, "~> 1.0.0"}]
+      [{:agala, "~> 1.0.1"}]
     end
     ```
 
