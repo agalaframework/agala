@@ -8,7 +8,6 @@ echo "Installing archive"
 mix archive.install --force
 ARCH=$(ls | grep ez)
 echo "Done"
-echo "Copying archive /installer/"$ARCH" to "$ARCH
-mv $ARCH ../$ARCH
+echo "Copying archive /installer/"$ARCH" to agala_new.ex"
+mv $ARCH ../agala_new.ez
 echo "Done"
-
