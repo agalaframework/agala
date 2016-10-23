@@ -3,6 +3,7 @@
 #### Features
 
 * Added some documentation
+* Added coverage and deps badges
 
 ### 1.0.0
 
