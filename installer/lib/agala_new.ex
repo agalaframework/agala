@@ -198,12 +198,6 @@ defmodule Mix.Tasks.Agala.New do
     end
   end
 
-  defp kw_to_config(kw) do
-    Enum.map(kw, fn {k, v} ->
-      ",\n  #{k}: #{inspect v}"
-    end)
-  end
-
   defp in_umbrella?(app_path) do
     try do
       umbrella = Path.expand(Path.join [app_path, "..", ".."])
@@ -219,9 +213,6 @@ defmodule Mix.Tasks.Agala.New do
 
   defp agala_dep("deps/agala"), do: ~s[{:agala, "~> #{@version}"}]
   defp agala_dep(path), do: ~s[{:agala, path: #{inspect path}, override: true}]
-
-  defp agala_static_path("deps/agala"), do: "deps/agala"
-  defp agala_static_path(path), do: Path.join("..", path)
   
   defp agala_path(path, true) do
     absolute = Path.expand(path)

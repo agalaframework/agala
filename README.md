@@ -1,9 +1,26 @@
-
-# Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://img.shields.io/travis/Virviil/agala.svg)](https://travis-ci.org/Virviil/agala)
+# Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://img.shields.io/travis/Virviil/agala.svg)](https://travis-ci.org/Virviil/agala) [![Deps Status](https://beta.hexfaktor.org/badge/all/github/Virviil/agala.svg)](https://beta.hexfaktor.org/github/Virviil/agala) [![Coverage](http://inch-ci.org/github/virviil/agala.svg)(http://inch-ci.org/github/virviil/agala)
 
 Full-featured Telegram bot framework.
 
-## Installation
+## Installation via Mix
+
+You can scaffold your new bot with simple commands! To do this:
+
+  1. Install archive to your local Mix:
+
+    ```bash
+    $ mix archive.install
+    https://github.com/Virviil/agala/releases/download/v1.0.1/agala_new-1.0.1.ez
+    ```
+  2. Simply run
+    
+    ```bash
+    $ mix agala.new
+    ```
+
+    to see next instructions.
+
+## Installation via Hex
 
 The package is [available in Hex](https://hex.pm/packages/agala), and can be installed as:
 
@@ -11,7 +28,7 @@ The package is [available in Hex](https://hex.pm/packages/agala), and can be ins
 
     ```elixir
     def deps do
-      [{:agala, "~> 0.1.1"}]
+      [{:agala, "~> 1.0.1"}]
     end
     ```
 
