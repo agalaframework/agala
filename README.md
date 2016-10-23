@@ -1,5 +1,4 @@
-
-# Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://img.shields.io/travis/Virviil/agala.svg)](https://travis-ci.org/Virviil/agala)
+# Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://img.shields.io/travis/Virviil/agala.svg)](https://travis-ci.org/Virviil/agala) [![Deps Status](https://beta.hexfaktor.org/badge/all/github/Virviil/agala.svg)](https://beta.hexfaktor.org/github/Virviil/agala) [![Coverage](http://inch-ci.org/github/virviil/agala.svg)(http://inch-ci.org/github/virviil/agala)
 
 Full-featured Telegram bot framework.
 

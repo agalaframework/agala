@@ -17,6 +17,8 @@ defmodule Agala.Router do
       use Supervisor
       require Logger
 
+      @default_handler Agala.Handler.Echo
+
       # Initialisation
 
       @doc false

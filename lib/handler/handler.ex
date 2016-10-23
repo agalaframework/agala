@@ -4,7 +4,7 @@ defmodule Agala.Handler do
   """
 
   @typep state :: any
-
+  
   @callback state() :: state
 
   @callback handle(state, %{}) :: state

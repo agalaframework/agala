@@ -1,3 +1,9 @@
+### 1.0.1
+
+#### Features
+
+* Added some documentation
+
 ### 1.0.0
 
 #### Features
