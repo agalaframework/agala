@@ -10,7 +10,7 @@ You can scaffold your new bot with simple commands! To do this:
 
     ```bash
     $ mix archive.install
-    https://github.com/Virviil/agala/releases/download/v1.0.2/agala_new-1.0.2.ez
+    https://github.com/Virviil/agala/releases/download/v1.0.2/agala_new.ez
     ```
   2. Simply run
     
