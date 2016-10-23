@@ -34,7 +34,8 @@ defmodule Agala.Mixfile do
       {:httpoison, "~> 0.9.2"},
       {:poison, "~> 3.0"},
       {:gproc, "~> 0.6.1"},
-      {:ex_doc, ">=0.0.0", only: :dev}
+      {:ex_doc, "~> 0.14.3", only: :dev},
+      {:inch_ex,"~> 0.5.5", only: :docs}
     ]
   end
 
