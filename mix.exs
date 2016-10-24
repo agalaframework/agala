@@ -23,7 +23,8 @@ defmodule Agala.Mixfile do
       {:poison, "~> 3.0"},
       {:gproc, "~> 0.6.1"},
       {:ex_doc, "~> 0.14.3", only: :dev},
-      {:inch_ex,"~> 0.5.5", only: :docs}
+      {:inch_ex,"~> 0.5.5", only: :docs},
+      {:credo, "~> 0.4", only: [:dev, :test]}
     ]
   end
 

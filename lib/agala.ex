@@ -36,7 +36,9 @@ defmodule Agala do
   Gets timeout from configuration
   """
   def get_timeout do
-    Application.get_env(:agala, :request_timeout) || @default_timeout 
+    Application.get_env(
+      :agala, :request_timeout
+    ) || @default_timeout
   end
 
   @doc """
@@ -87,8 +89,9 @@ defmodule Agala do
 
   def get_token do
     token_name = Application.get_env(:agala, :token_env)
-    if (is_nil(token_name)) do
-      raise "Invalid token variable name. Please define :agala, :token_name in config.exs"
+    if is_nil(token_name) do
+      raise "Invalid token variable name. Please define :agala,\
+       :token_name in config.exs"
     else
       get_token_from_env(token_name)
     end
@@ -96,11 +99,11 @@ defmodule Agala do
 
   defp get_token_from_env(token_name) do
     token = System.get_env(token_name)
-    if (is_nil(token)) do
-      raise "Invalid token name. Please export token to environment variable with name defined in :agala, :token_name in config.exs"
+    if is_nil(token) do
+      raise "Invalid token name. Please export token to environment\
+       variable with name defined in :agala, :token_name in config.exs"
     else
       token
     end
   end
 end
-

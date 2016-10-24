@@ -6,7 +6,7 @@ defmodule Agala.Router do
   @type message :: any
 
   @callback handler_id(message) :: term
-  
+
   @callback route(message) :: any
 
   defmacro __using__(_) do
@@ -44,7 +44,7 @@ defmodule Agala.Router do
         Agala.get_handler().handle_message(hid, message)
       end
 
-      @typep hid :: term # handler_id type 
+      @typep hid :: term # handler_id type
 
       @spec start_handler(Agala.Router.message) :: hid
       def start_handler(message) do
