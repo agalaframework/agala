@@ -4,7 +4,7 @@ defmodule Agala.Bot.Poller do
   alias Agala.Bot, as: Bot
 
   @moduledoc """
-  Main gen_server module, which is making polling requests to Telegram API`
+  Main gen_server module, which is making polling requests to Telegram API
   """
 
   def start_link(state) do

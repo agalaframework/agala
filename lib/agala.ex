@@ -37,29 +37,29 @@ defmodule Agala do
   """
   def get_timeout do
     Application.get_env(
-      :agala, :request_timeout
-    ) || @default_timeout
+      :agala, :request_timeout, @default_timeout
+    )
   end
 
   @doc """
   Gets router from the configuration
   """
   def get_router do
-    Application.get_env(:agala, :router) || @default_router
+    Application.get_env(:agala, :router, @default_router)
   end
 
   @doc """
   Gets handler from configuration
   """
   def get_handler do
-    Application.get_env(:agala, :handler) || @default_handler
+    Application.get_env(:agala, :handler, @default_handler)
   end
 
   @doc """
   Gets proxy from the configuration
   """
   def get_proxy do
-    Application.get_env(:agala, :proxy) || nil
+    Application.get_env(:agala, :proxy)
   end
 
 
@@ -67,7 +67,7 @@ defmodule Agala do
   Gets proxy auth parameters from the configuration
   """
   def get_proxy_auth do
-    Application.get_env(:agala, :proxy_auth) || nil
+    Application.get_env(:agala, :proxy_auth)
   end
 
   defp set_proxy(opts) do

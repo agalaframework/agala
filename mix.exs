@@ -9,12 +9,21 @@ defmodule Agala.Mixfile do
      start_permanent: Mix.env == :prod,
      description: description(),
      package: package(),
+     aliases: aliases(),
      deps: deps()]
   end
 
   def application do
-    [applications: [:logger, :httpoison, :gproc],
-     mod: {Agala, []}]
+    [
+      applications: [:logger, :httpoison, :gproc],
+      mod: {Agala, []}
+    ]
+  end
+
+  defp aliases do
+    [
+      test: "test --no-start"
+    ]
   end
 
   defp deps do
