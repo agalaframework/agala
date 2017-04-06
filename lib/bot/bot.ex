@@ -44,11 +44,16 @@ defmodule Agala.Bot do
     |> process_messages
   end
   def resolve_updates({offset, {:ok, %HTTPoison.Response{status_code: status_code}}}) do
-    Logger.error("HTTP response ended with status code #{status_code}")
+    Logger.warn("HTTP response ended with status code #{status_code}")
+    offset
+  end
+  def resolve_updates({offset, {:error, %HTTPoison.Error{id: nil, reason: :timeout}}}) do
+    # This is just failed long polling, simply restart
+    Logger.info("Long polling request failed, resend")
     offset
   end
   def resolve_updates({offset, {:error, err}}) do
-    Logger.error("#{inspect err}")
+    Logger.warn("#{inspect err}")
     offset
   end
 

@@ -1,29 +1,29 @@
-defmodule Agala.RouterTest do
-  use ExUnit.Case
+# defmodule Agala.RouterTest do
+#   use ExUnit.Case
 
-  alias Agala.RouterTest.TestRouter
+#   alias Agala.RouterTest.TestRouter
 
-  doctest Agala.Router
+#   doctest Agala.Router
 
-  setup do
-    {:ok, router} = TestRouter.start_link
+#   setup do
+#     {:ok, router} = TestRouter.start_link
 
-    on_exit fn ->
-      GenServer.stop(router)
-    end
+#     on_exit fn ->
+#       GenServer.stop(router)
+#     end
 
-    {:ok, process: router}
-  end
+#     {:ok, process: router}
+#   end
 
-  test "the truth" do
-    assert 1 + 1 == 2
-  end
-end
+#   test "the truth" do
+#     assert 1 + 1 == 2
+#   end
+# end
 
-defmodule Agala.RouterTest.TestRouter do
-  use Agala.Router
+# defmodule Agala.RouterTest.TestRouter do
+#   use Agala.Router
 
-  def handler_ids(message) do
-    :test
-  end
-end
+#   def handler_ids(message) do
+#     :test
+#   end
+# end
