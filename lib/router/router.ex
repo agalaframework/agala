@@ -64,8 +64,3 @@ defmodule Agala.Router do
     end
   end
 end
-
-
-
-# Пояс шахида на теле
-# очень плахая примета
