@@ -4,14 +4,12 @@ defmodule Agala.Handler do
   """
 
   @typep state :: any
-  
-  @callback state() :: state
 
-  @callback handle(state, %{}) :: state
+  @callback handle(state, Agala.Model.Message.t) :: state
 
   defmacro __using__(_) do
     quote location: :keep do
-    
+
       @behaviour Agala.Handler
       use GenServer
 
@@ -19,7 +17,7 @@ defmodule Agala.Handler do
 
       @doc false
       def start_link(name) do
-        GenServer.start_link(__MODULE__, state, name: via_tuple(name))
+        GenServer.start_link(__MODULE__, [], name: via_tuple(name))
       end
 
       @doc false
@@ -28,6 +26,7 @@ defmodule Agala.Handler do
       end
 
       @doc false
+      @spec handle_message(term, any) :: :ok
       def handle_message(name, message) do
         GenServer.cast(via_tuple(name), {:handle_message, message})
       end

@@ -5,8 +5,11 @@ defmodule Agala.Router do
 
   @type message :: any
 
-  @callback handler_id(message) :: term
-  
+  @type handler_id :: term
+
+  @callback handler_ids(message) :: [handler_id]
+  @callback handler_id(message) :: handler_id
+
   @callback route(message) :: any
 
   defmacro __using__(_) do
@@ -39,19 +42,30 @@ defmodule Agala.Router do
 
       @doc false
       def route(message) do
-        hid = start_handler(message)
-        Logger.debug("Routing message to handler with id #{inspect hid}")
-        Agala.get_handler().handle_message(hid, message)
+        for hid <- get_handler_list(message) do
+          hid
+          |> start_handler
+          |> Agala.get_handler().handle_message(message)
+          Logger.debug("Routing message to handler with id #{inspect hid}")
+        end
       end
 
-      @typep hid :: term # handler_id type 
+      @typep hid :: term # handler_id type
+
+      def get_handler_list(message) do 
+        hids = handler_ids(message)
+      end
 
       @spec start_handler(Agala.Router.message) :: hid
-      def start_handler(message) do
-        hid = handler_id(message)
+      def start_handler(hid) do
         Supervisor.start_child(__MODULE__, [hid])
         hid
       end
     end
   end
 end
+
+
+
+# Пояс шахида на теле
+# очень плахая примета
