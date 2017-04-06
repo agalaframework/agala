@@ -8,17 +8,18 @@ You can scaffold your new bot with simple commands! To do this:
 
   1. Install archive to your local Mix:
 
-    ```bash
-    $ mix archive.install
-    https://github.com/Virviil/agala/releases/download/v1.0.2/agala_new.ez
-    ```
+  ```bash
+  $ mix archive.install
+  https://github.com/Virviil/agala/releases/download/v1.0.2/agala_new.ez
+  ```
+
   2. Simply run
     
-    ```bash
-    $ mix agala.new
-    ```
+  ```bash
+  $ mix agala.new
+  ```
 
-    to see next instructions.
+  to see next instructions.
 
 ## Installation via Hex
 
@@ -26,19 +27,19 @@ The package is [available in Hex](https://hex.pm/packages/agala), and can be ins
 
   1. Add `agala` to your list of dependencies in `mix.exs`:
 
-    ```elixir
-    def deps do
-      [{:agala, "~> 1.0.2"}]
-    end
-    ```
+  ```elixir
+  def deps do
+    [{:agala, "~> 1.0.2"}]
+  end
+  ```
 
   2. Ensure `agala` is started before your application:
 
-    ```elixir
-    def application do
-      [applications: [:agala]]
-    end
-    ```
+  ```elixir
+  def application do
+    [applications: [:agala]]
+  end
+  ```
 
 ## Configuration
 
@@ -61,7 +62,7 @@ should be exported to the environment with name, maped to `:token_env` parameter
 in your configuration you use 
 
 ```elixir
-  token_env: "TELEGRAM_TOKEN"
+token_env: "TELEGRAM_TOKEN"
 ```
 
 then you should export your token with the same name like this:
