@@ -31,6 +31,7 @@ defmodule Agala.Mixfile do
       {:httpoison, "~> 0.11"},
       {:poison, "~> 3.1"},
       {:gproc, "~> 0.6.1"},
+      {:config, github: "renderedtext/ex-config"},
       {:ex_doc, "~> 0.15", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
       {:credo, "~> 0.7", only: [:dev, :test]}

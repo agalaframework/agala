@@ -2,7 +2,8 @@ defmodule Agala.Handler.Echo do
   use Agala.Handler
   require Logger
 
-  alias Agala.Bot, as: Bot
+  alias Agala.Conn
+  import Agala.Client.Telegram
 
   @moduledoc """
   Simple echo handler - returns the incoming message back to the user.
@@ -12,9 +13,16 @@ defmodule Agala.Handler.Echo do
     {:ok, []}
   end
 
-  def handle(state, message = %{"message" => %{"text" => text, "chat" => %{"id" => id}}}) do
+  def handle(conn = %Agala.Conn{request: %{"message" => %{"text" => text, "chat" => %{"id" => id}}}}) do
     Logger.info("Handling message #{inspect message}")
-    Bot.exec_cmd("sendMessage", %{chat_id: id, text: text})
-    state
+    
+    conn
+    |> send_message(chat_id, text)
+  end
+
+  def handle(token, message = %{"message" => %{"text" => text, "chat" => %{"id" => id}}}) do
+    Logger.info("Handling message #{inspect message}")
+    Bot.exec_cmd("sendMessage", token, %{chat_id: id, text: text})
+    token
   end
 end

@@ -1,89 +1,94 @@
 defmodule Agala.Bot do
-  use HTTPoison.Base
   require Logger
-
-  @default_router Agala.Router.Direct
+  alias Agala.Bot.PollerParams
 
   @moduledoc """
   Main worker module
   """
-  def process_url(url) do
-    "https://api.telegram.org/bot" <> Agala.get_token <> "/" <> url
+
+  def get_updates_url(%PollerParams{token: token}) do
+    "https://api.telegram.org/bot" <> token <> "/getUpdates"
   end
 
-  def getUpdates(%{timeout: timeout, offset: offset}) do
-    "getUpdates"
-    |> exec_cmd(%{timeout: timeout, offset: offset})
-    |> resolve_updates
+  def get_updates_body(%PollerParams{offset: offset, timeout: timeout}) do
+    %{offset: offset, timeout: timeout} |> Poison.encode!
   end
 
-  def resolve_updates({
-    offset,
+  def get_updates_options(%PollerParams{http_opts: http_opts}), do: http_opts
+
+  def get_updates(poller_params = %Agala.Bot.PollerParams{}) do
+    HTTPoison.post(
+      get_updates_url(poller_params),     # url
+      get_updates_body(poller_params),    # body
+      [],                                 # headers
+      get_updates_options(poller_params)  # opts
+    )
+    |> parse_body
+    |> resolve_updates(poller_params)
+  end
+
+  def resolve_updates(
     {
       :ok,
       %HTTPoison.Response{
         status_code: 200,
         body: %{"ok" => true, "result" => []}
       }
-    }
-  }) do
-    offset
+    },
+    poller_params
+  ), do: poller_params
+  def resolve_updates(
+    {
+      :error,
+      %HTTPoison.Error{
+        id: nil,
+        reason: :timeout
+      }
+    },
+    poller_params
+  ) do
+    # This is just failed long polling, simply restart
+    Logger.debug("Long polling request ended with timeout, resend to poll")
+    poller_params
   end
-  def resolve_updates({
-    _offset,
+
+  def resolve_updates(
     {
       :ok,
       %HTTPoison.Response{
         status_code: 200,
         body: %{"ok" => true, "result" => result}
       }
-    }
-  }) do
+    },
+    poller_params
+  ) do
     Logger.debug "Response body is:\n #{inspect(result)}"
     result
-    |> process_messages
+    |> process_messages(poller_params)
   end
-  def resolve_updates({offset, {:ok, %HTTPoison.Response{status_code: status_code}}}) do
+  def resolve_updates({:ok, %HTTPoison.Response{status_code: status_code, body: body}}, poller_params) do
     Logger.warn("HTTP response ended with status code #{status_code}")
-    offset
+
+    poller_params
   end
-  def resolve_updates({offset, {:error, %HTTPoison.Error{id: nil, reason: :timeout}}}) do
-    # This is just failed long polling, simply restart
-    Logger.info("Long polling request failed, resend")
-    offset
-  end
-  def resolve_updates({offset, {:error, err}}) do
+  def resolve_updates({:error, err}, poller_params) do
     Logger.warn("#{inspect err}")
-    offset
+    poller_params
   end
 
-  def exec_cmd(cmd, params = %{offset: offset}) do
-    {offset, get(cmd, [], params: params)}
+  def parse_body({:ok, resp = %HTTPoison.Response{body: body}}) do
+    {:ok, %HTTPoison.Response{resp | body: Poison.decode!(body)}}
   end
+  def parse_body(default), do: default
 
-  def exec_cmd(cmd, params) do
-    get(cmd, [], params: params)
-  end
-
-  def process_response_body(body) do
-     body
-     |> Poison.decode!
-  end
-
-  def process_messages([message] = [%{"update_id"=>offset}]) do
-    process_message(message)
+  def process_messages([message] = [%{"update_id"=>offset}], poller_params) do
+    process_message(message, poller_params)
     #last message, so the offset is moving to +1
-    offset + 1
+    %PollerParams{poller_params | offset: offset+1 }
   end
-
-  def process_messages([h|t]) do
-    process_message(h)
-    process_messages(t)
+  def process_messages([h|t], poller_params) do
+    process_message(h, poller_params)
+    process_messages(t, poller_params)
   end
-
-  def process_message(message) do
-    Task.Supervisor.start_child(Agala.Bot.TasksSupervisor, fn ->
-      Agala.get_router().route(message)
-    end)
-  end
+  defp process_message(message, params = %PollerParams{router: router}), do: router.route(message, params)
 end

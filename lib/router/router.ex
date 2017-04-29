@@ -20,45 +20,41 @@ defmodule Agala.Router do
       use Supervisor
       require Logger
 
-      @default_handler Agala.Handler.Echo
-
       # Initialisation
 
       @doc false
-      def start_link do
-        Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+      def start_link(handler) do
+        Supervisor.start_link(__MODULE__, handler, name: __MODULE__)
       end
 
       @doc false
-      def init(_) do
+      def init(handler) do
         children = [
-          worker(Agala.get_handler(), [], restart: :transient)
-               ]
-
-            supervise(children, strategy: :simple_one_for_one)
+          worker(handler, [], restart: :transient)
+        ]
+        supervise(children, strategy: :simple_one_for_one)
       end
 
       # Routing
 
       @doc false
-      def route(message) do
+      def route(message, %Agala.Bot.PollerParams{token: token, handler: handler}) do
         for hid <- get_handler_list(message) do
           hid
-          |> start_handler
-          |> Agala.get_handler().handle_message(message)
+          |> start_handler(token)
+          |> handler.handle_message(message)
           Logger.debug("Routing message to handler with id #{inspect hid}")
         end
       end
 
       @typep hid :: term # handler_id type
 
-      def get_handler_list(message) do 
+      def get_handler_list(message) do
         hids = handler_ids(message)
       end
 
-      @spec start_handler(Agala.Router.message) :: hid
-      def start_handler(hid) do
-        Supervisor.start_child(__MODULE__, [hid])
+      def start_handler(hid, token) do
+        Supervisor.start_child(__MODULE__, [{hid, token}])
         hid
       end
     end

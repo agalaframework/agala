@@ -16,8 +16,8 @@ defmodule Agala.Handler do
       # API
 
       @doc false
-      def start_link(name) do
-        GenServer.start_link(__MODULE__, [], name: via_tuple(name))
+      def start_link({name, token}) do
+        GenServer.start_link(__MODULE__, [token], name: via_tuple(name))
       end
 
       @doc false
