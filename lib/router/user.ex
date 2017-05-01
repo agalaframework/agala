@@ -9,5 +9,4 @@ defmodule Agala.Router.User do
   def handler_ids(%{"message" => %{"chat" => %{"id" => user_id}}}) do
     [user_id]
   end
-
 end

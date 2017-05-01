@@ -9,7 +9,7 @@ defmodule Agala.Provider.Telegram do
       base_url <> "/sendMessage",
       opts |> Keyword.put(:chat_id, chat_id) |> Keuword.put(:text, text) |> Enum.into(%{}) |> Poison.encode!,
       [],
-      conn.poller_params.http_opts
+      conn.bot_params.http_opts
     )
   end
 end

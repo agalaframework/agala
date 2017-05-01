@@ -89,5 +89,13 @@ defmodule Agala.Poller.Telegram do
     process_message(h, bot_params)
     process_messages(t, bot_params)
   end
-  defp process_message(message, params = %BotParams{router: router}), do: router.route(message, params)
+
+
+  defp process_message(message, bot_params = %BotParams{router: router}) do
+    router.route(%Agala.Conn{
+      bot_params: bot_params,
+      request: message,
+      response: nil
+    })
+  end
 end
