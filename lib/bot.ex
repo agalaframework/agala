@@ -1,27 +1,21 @@
 defmodule Agala.Bot do
-  use GenServer
-  require Logger
+  use Supervisor
 
-  @moduledoc """
-  Main gen_server module, which is making polling requests to Telegram API
-  """
+  defp via_tuple(name) do
+    {:via, Registry, {Agala.Registry, {:bot, name}}
+  end
 
-  @spec start_link(bot_params :: Agala.Conn.BotParams.t) :: GenServer.on_start
   def start_link(bot_params) do
-    GenServer.start_link(__MODULE__, bot_params, [name: bot_params.name])
+    Supervisor.start_link(__MODULE__, bot_params, name: via_tuple(bot_params.name))
   end
 
-  @spec init(bot_params :: Agala.Conn.BotParams.t) :: {:ok, Agala.Conn.BotParams.t}
   def init(bot_params) do
-    Logger.info("Starting poller with params:\n\t#{inspect poller_params}\r")
-    Process.send(self(), :loop, [])
-    {:ok, bot_params}
-  end
+    children = [
+      worker(Agala.PollServer, [bot_params])
+      supervisor(bot_params.router, [bot_params])
+    ]
 
-  @spec handle_info(:loop, bot_params :: Agala.Conn.BotParams.t) :: {:noreply, Agala.Conn.BotParams.t}
-  def handle_info(:loop, bot_params) do
-    Process.send(self(), :loop, [])
-    {:noreply, bot_params.poller.get_updates(bot_params)}
+    # supervise/2 is imported from Supervisor.Spec
+    supervise(children, strategy: :one_for_one)
   end
-  def handle_info(_, state), do: {:noreply, state}
 end

@@ -1,6 +1,6 @@
-defmodule Agala.Conn.BotParams do
+defmodule Agala.BotParams do
 
-  @type t :: %Agala.Conn.BotParams{
+  @type t :: %Agala.BotParams{
     private: %{},
     name: atom,
     poller: atom,
@@ -13,9 +13,9 @@ defmodule Agala.Conn.BotParams do
   defstruct [:private, :name, :poller, :router, :handler, :token, :timeout, :http_opts]
 
 
-  @spec defaults(name :: atom) :: Agala.Conn.BotParams.t
+  @spec defaults(name :: atom) :: Agala.BotParams.t
   def defaults(name) do
-    %Agala.Conn.BotParams{
+    %Agala.BotParams{
       private: %{offset: Agala.Config.offset()},
       name: name,
       poller: Agala.Config.poller(),

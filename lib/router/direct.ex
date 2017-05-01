@@ -19,9 +19,13 @@ defmodule Agala.Router.Direct do
 
   or don't put anything, because this router goes by default.
   """
+  defp via_tuple(name) do
+    {:via, Registry, {Agala.Registry, {:router, name}}
+  end
 
-  def start_link do
-    Supervisor.start_link(__MODULE__, [], name: Agala.Router.Direct)
+
+  def start_link(bot_params) do
+    Supervisor.start_link(__MODULE__, [bot_params], name: via_tuple(bot_params.name))
   end
 
   @doc """
@@ -30,9 +34,9 @@ defmodule Agala.Router.Direct do
 
   Unlikely you need to call this function manualy.
   """
-  def init(_) do
+  def init(bot_params) do
     children = [
-      worker(Agala.get_handler(), [Agala.get_handler()])
+      worker(bot_params.handler, [bot_params])
     ]
 
     supervise(children, strategy: :one_for_one)
