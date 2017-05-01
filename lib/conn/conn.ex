@@ -1,8 +1,8 @@
 defmodule Agala.Conn do
-  defstruct [:poller_params, :request, :response]
+  defstruct [:bot_params, :request, :response]
 
   @type t :: %Agala.Conn{
-    poller_params: Agala.Conn.PollerParams.t,
+    bot_params: Agala.Conn.BotParams.t,
     request: Map.t,
     response: Agala.Conn.Response.t
   }

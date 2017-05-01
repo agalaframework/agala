@@ -4,7 +4,7 @@ defmodule Agala.Mixfile do
   def project do
     [app: :agala,
      version: "1.0.3",
-     elixir: "~> 1.3",
+     elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
@@ -53,4 +53,3 @@ defmodule Agala.Mixfile do
     ]
   end
 end
-

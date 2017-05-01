@@ -12,9 +12,9 @@ defmodule Agala do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    token = Agala.Config.token()
     Logger.info("Starting Agala server")
     children = [
+      supervisor(Registry, [:unique, Agala.Registry])
       worker(Agala.Bot.Poller, [Agala.Bot.PollerParams.defaults()]),
       supervisor(Agala.Config.router(), [Agala.Config.handler()])
     ]
