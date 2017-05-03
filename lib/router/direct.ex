@@ -36,7 +36,7 @@ defmodule Agala.Router.Direct do
   """
   def init(bot_params) do
     children = [
-      worker(bot_params.handler, [bot_params])
+      worker(bot_params.handler, [bot_params, :uniq])
     ]
 
     supervise(children, strategy: :one_for_one)
@@ -51,10 +51,9 @@ defmodule Agala.Router.Direct do
    case of routing. In this module, `t:Agala.Model.Message.t/0`
    is simply passed to the `handler`
   """
-  @type message :: Agala.Model.Message.t()
-  @spec route(message) :: :ok
-  def route(message) do
-    Agala.get_handler().handle_message(Agala.get_handler(), message)
+  @spec route(conn :: Agala.Conn.t) :: :ok
+  def route(conn = %Agala.Conn{bot_params: %{handler: handler}}) do
+    handler.handle_message(conn)
   end
 
 end

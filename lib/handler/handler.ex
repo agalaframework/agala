@@ -16,18 +16,18 @@ defmodule Agala.Handler do
       # API
 
       @doc false
-      def start_link({name, token}) do
-        GenServer.start_link(__MODULE__, [token], name: via_tuple(name))
+      defp via_tuple(name, id) do
+        {:via, Registry, {Agala.Registry, {:handler, name, id}}
       end
 
       @doc false
-      defp via_tuple(name) do
-        {:via, :gproc, {:n, :l, {:handler_echo, name}}}
+      def start_link(bot_params, id) do
+        GenServer.start_link(__MODULE__, [], name: via_tuple(bot_params.name, id))
       end
 
       @doc false
       @spec handle_message(term, any) :: :ok
-      def handle_message(name, message) do
+      def handle_message(name, id, message) do
         GenServer.cast(via_tuple(name), {:handle_message, message})
       end
 
