@@ -26,9 +26,9 @@ defmodule Agala.Handler do
       end
 
       @doc false
-      @spec handle_message(term, any) :: :ok
-      def handle_message(name, id, message) do
-        GenServer.cast(via_tuple(name), {:handle_message, message})
+      @spec handle_message(Agala.Conn.t, any) :: :ok
+      def handle_message(conn, id) do
+        GenServer.cast(via_tuple(conn.bot_params.name, id), {:handle_message, message})
       end
 
       # SERVER
