@@ -11,11 +11,11 @@ defmodule Agala.Bot do
 
   def init(bot_params) do
     children = [
-      worker(Agala.PollServer, [bot_params])
-      supervisor(bot_params.router, [bot_params])
+      worker(Agala.Bot.PollServer, [bot_params])
+      worker(Agala.Bot.PollHandler, [bot_params])
+      worker(Agala.Bot.Responser, [bot_params])
     ]
 
-    # supervise/2 is imported from Supervisor.Spec
     supervise(children, strategy: :one_for_one)
   end
 end

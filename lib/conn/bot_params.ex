@@ -3,9 +3,10 @@ defmodule Agala.BotParams do
   @type t :: %Agala.BotParams{
     private: %{},
     name: atom,
+    provider: atom,
     poller: atom,
-    router: atom,
     handler: atom,
+    provider_params: %{},
     token: String.t,
     poll_timeout: integer,
     http_opts: Keyword.t

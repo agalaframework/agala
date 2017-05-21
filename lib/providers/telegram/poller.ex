@@ -1,4 +1,4 @@
-defmodule Agala.Poller.Telegram do
+defmodule Agala.Provider.Telegram.Poller do
   require Logger
   alias Agala.BotParams
 
@@ -91,11 +91,12 @@ defmodule Agala.Poller.Telegram do
   end
 
 
-  defp process_message(message, bot_params = %BotParams{router: router}) do
-    router.route(%Agala.Conn{
-      bot_params: bot_params,
-      request: message,
-      response: nil
-    })
+  defp process_message(message, bot_params) do
+    # Cast received message to handle bank, there the message
+    # will be proceeded throw handlers pipe
+    Agala.Bot.PollHandler.cast_to_handle(
+      message,
+      bot_params
+    )
   end
 end
