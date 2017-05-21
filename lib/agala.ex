@@ -23,9 +23,6 @@ defmodule Agala do
   end
 
   def response_with(conn) do
-    GenServer.cast(
-      Agala.Bot.Responser.via_tuple(conn.response.name),
-      conn
-      )
+    Agala.Bot.Responser.cast_to_handle(conn)
   end
 end

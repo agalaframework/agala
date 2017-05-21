@@ -1,5 +1,5 @@
 defmodule Agala.Conn do
-  defstruct [:bot_params, :request, :response]
+  defstruct [:request, :response]
 
   @type t :: %Agala.Conn{
     request: Map.t,
