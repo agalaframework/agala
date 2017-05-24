@@ -12,4 +12,8 @@ defmodule Agala.Provider.Telegram do
       conn.bot_params.http_opts
     )
   end
+
+  def response(conn, bot_params) do
+    # Here is telegram answer
+  end
 end

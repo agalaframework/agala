@@ -12,4 +12,9 @@ defmodule Agala.Provider.Telegram.Helpers do
       conn.bot_params.http_opts
     )
   end
+
+  defmacro __using__(_) do
+    quote location: :keep do
+    end
+  end
 end

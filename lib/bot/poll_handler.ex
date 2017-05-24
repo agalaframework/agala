@@ -3,7 +3,7 @@ defmodule Agala.Bot.PollHandler do
   require Logger
 
   @moduledoc """
-  Module, represents the bank which gets messages from poller and the syncronosly proceeds them
+  Module, represents the bank which gets messages from poller and then syncronosly proceeds them
   """
 
   defp via_tuple(name) do
@@ -36,7 +36,7 @@ defmodule Agala.Bot.PollHandler do
 
   @spec handle_cast({:polled_message, conn}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
   def handle_cast({:polled_message, conn}, bot_params = %Agala.BotParams{handler: handler}) do
-    handler.handle(conn)
+    handler.handle(conn, bot_params)
     |> Agala.response_with
     {:noreply, bot_params}
   end

@@ -25,7 +25,12 @@ defmodule Agala.Bot.PollServer do
   @spec handle_info(:loop, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
   def handle_info(:loop, bot_params) do
     Process.send(self(), :loop, [])
-    {:noreply, bot_params.poller.get_updates(bot_params)}
+    {:noreply, poller(bot_params.provider).get_updates(bot_params)}
   end
   def handle_info(_, state), do: {:noreply, state}
+
+  # Expands module name from provider to poller
+  defp poller(provider) do
+    String.to_atom(Atom.to_string(provider)<>".Poller")
+  end
 end
