@@ -1,3 +1,9 @@
+### 1.0.3
+
+#### Bugs
+
+* Fixing logging configuration
+
 ### 1.0.2
 
 #### Features

@@ -4,12 +4,16 @@ defmodule Agala.Bot do
 
   @default_router Agala.Router.Direct
 
+  @moduledoc """
+  Main worker module
+  """
   def process_url(url) do
     "https://api.telegram.org/bot" <> Agala.get_token <> "/" <> url
   end
 
   def getUpdates(%{timeout: timeout, offset: offset}) do
-    exec_cmd("getUpdates", %{timeout: timeout, offset: offset})
+    "getUpdates"
+    |> exec_cmd(%{timeout: timeout, offset: offset})
     |> resolve_updates
   end
 
@@ -39,16 +43,21 @@ defmodule Agala.Bot do
     result
     |> process_messages
   end
-  def resolve_updates({ offset, { :ok, %HTTPoison.Response { status_code: status_code } } } ) do
-    Logger.error("HTTP response ended with status code #{status_code}")
+  def resolve_updates({offset, {:ok, %HTTPoison.Response{status_code: status_code}}}) do
+    Logger.warn("HTTP response ended with status code #{status_code}")
     offset
   end
-  def resolve_updates({ offset, { :error, err }}) do
-    Logger.error("#{inspect err}")
+  def resolve_updates({offset, {:error, %HTTPoison.Error{id: nil, reason: :timeout}}}) do
+    # This is just failed long polling, simply restart
+    Logger.info("Long polling request failed, resend")
+    offset
+  end
+  def resolve_updates({offset, {:error, err}}) do
+    Logger.warn("#{inspect err}")
     offset
   end
 
-  def exec_cmd(cmd, params=%{offset: offset}) do
+  def exec_cmd(cmd, params = %{offset: offset}) do
     {offset, get(cmd, [], params: params)}
   end
 
@@ -61,7 +70,7 @@ defmodule Agala.Bot do
      |> Poison.decode!
   end
 
-  def process_messages([message]=[%{"update_id"=>offset}]) do
+  def process_messages([message] = [%{"update_id"=>offset}]) do
     process_message(message)
     #last message, so the offset is moving to +1
     offset + 1
@@ -78,4 +87,3 @@ defmodule Agala.Bot do
     end)
   end
 end
-

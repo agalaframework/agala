@@ -3,27 +3,37 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "1.0.2",
+     version: "1.0.3",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
      package: package(),
+     aliases: aliases(),
      deps: deps()]
   end
 
   def application do
-    [applications: [:logger, :httpoison, :gproc],
-     mod: {Agala, []}]
+    [
+      applications: [:logger, :httpoison, :gproc],
+      mod: {Agala, []}
+    ]
+  end
+
+  defp aliases do
+    [
+      test: "test --no-start"
+    ]
   end
 
   defp deps do
     [
-      {:httpoison, "~> 0.9.2"},
-      {:poison, "~> 3.0"},
+      {:httpoison, "~> 0.11"},
+      {:poison, "~> 3.1"},
       {:gproc, "~> 0.6.1"},
-      {:ex_doc, "~> 0.14.3", only: :dev},
-      {:inch_ex,"~> 0.5.5", only: :docs}
+      {:ex_doc, "~> 0.15", only: :dev},
+      {:inch_ex,"~> 0.5", only: :docs},
+      {:credo, "~> 0.7", only: [:dev, :test]}
     ]
   end
 
@@ -32,7 +42,7 @@ defmodule Agala.Mixfile do
     Full featured Telegram bot framework.
     """
   end
-  
+
   defp package do
     [
       maintainers: ["Dmitry Rubinstein", "Vladimir Barsukov"],
