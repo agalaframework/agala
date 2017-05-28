@@ -7,7 +7,7 @@ defmodule Agala.Bot.PollServer do
   """
 
   defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:poll_server, name}}
+    {:via, Registry, {Agala.Registry, {:poll_server, name}}}
   end
 
   @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start

@@ -2,7 +2,7 @@ defmodule Agala.Bot do
   use Supervisor
 
   defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:bot, name}}
+    {:via, Registry, {Agala.Registry, {:bot, name}}}
   end
 
   def start_link(bot_params) do
@@ -11,8 +11,8 @@ defmodule Agala.Bot do
 
   def init(bot_params) do
     children = [
-      worker(Agala.Bot.PollServer, [bot_params])
-      worker(Agala.Bot.PollHandler, [bot_params])
+      worker(Agala.Bot.PollServer, [bot_params]),
+      worker(Agala.Bot.PollHandler, [bot_params]),
       worker(Agala.Bot.Responser, [bot_params])
     ]
 
