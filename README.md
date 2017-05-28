@@ -10,11 +10,11 @@ You can scaffold your new bot with simple commands! To do this:
 
   ```bash
   $ mix archive.install
-  https://github.com/Virviil/agala/releases/download/v1.0.2/agala_new.ez
+  https://github.com/Virviil/agala/releases/download/v1.0.3/agala_new.ez
   ```
 
   2. Simply run
-    
+
   ```bash
   $ mix agala.new
   ```
@@ -29,7 +29,7 @@ The package is [available in Hex](https://hex.pm/packages/agala), and can be ins
 
   ```elixir
   def deps do
-    [{:agala, "~> 1.0.2"}]
+    [{:agala, "~> 1.0.3"}]
   end
   ```
 
@@ -59,7 +59,7 @@ Meanwhile, almost all parameters are optional, and will be discussed in next sec
 
 In order to have better deplopoyment experience, you **Telegram bot token**, which should be obtained from [BotFather](https://telegram.me/BotFather),
 should be exported to the environment with name, maped to `:token_env` parameter. For example, if
-in your configuration you use 
+in your configuration you use
 
 ```elixir
 token_env: "TELEGRAM_TOKEN"
@@ -101,7 +101,7 @@ To configure router, just map it's name to this parameter:
 
 ### :handler
 
-This parameter represents name of the module, which is handling messages, incoming from your **router**. 
+This parameter represents name of the module, which is handling messages, incoming from your **router**.
 
 This is the part of application, which should be implemented by **you**. To know, how to do this - read appropriate section.
 **Agala** comes with simple **echo handler**, which just resends incoming message back. Obviosly you would never use it - it's done for test purposes.
