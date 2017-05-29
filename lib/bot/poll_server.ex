@@ -17,9 +17,9 @@ defmodule Agala.Bot.PollServer do
 
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
-    Logger.info("Starting poller with params:\n\t#{inspect poller_params}\r")
+    Logger.info("Starting poller with params:\n\t#{inspect bot_params}\r")
     Process.send(self(), :loop, [])
-    {:ok, bot_params}
+    {:ok, bot_params.provider.init(bot_params)}
   end
 
   @spec handle_info(:loop, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}

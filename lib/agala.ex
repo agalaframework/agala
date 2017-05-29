@@ -14,8 +14,7 @@ defmodule Agala do
 
     Logger.info("Starting Agala server")
     children = [
-      supervisor(Registry, [:unique, Agala.Registry]),
-      worker(Agala.Responser, [], name: Agala.Responser)
+      supervisor(Registry, [:unique, Agala.Registry])
     ]
 
     opts = [strategy: :one_for_one]

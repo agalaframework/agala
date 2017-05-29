@@ -7,7 +7,7 @@ defmodule Agala.Bot.Responser do
   """
 
   defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:responser, name}}
+    {:via, Registry, {Agala.Registry, {:responser, name}}}
   end
 
   @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start
@@ -17,13 +17,13 @@ defmodule Agala.Bot.Responser do
 
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
-    Logger.info("Starting responser with params:\n\t#{inspect poller_params}\r")
+    Logger.info("Starting responser with params:\n\t#{inspect bot_params}\r")
     {:ok, bot_params}
   end
 
   ### API
 
-  def cast_to_handle(conn = %Agala.Conn{response: %AgalaResponse{name: name, method: method}) do
+  def cast_to_handle(conn = %Agala.Conn{response: %Agala.Response{name: name, method: method}}) do
     case method do
       :noaction -> :ok
       _ -> GenServer.cast(via_tuple(name), {:send_conn, conn})
@@ -32,7 +32,7 @@ defmodule Agala.Bot.Responser do
 
   ### Callbacks
 
-  @spec handle_cast({:send_conn, conn}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
+  @spec handle_cast({:send_conn, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
   def handle_cast({:polled_message, conn}, bot_params = %Agala.BotParams{handler: handler}) do
     HTTPoison.request(
       conn.response.method,

@@ -4,12 +4,12 @@ defmodule Agala.BotParams do
     private: %{},
     name: atom,
     provider: atom,
-    poller: atom,
     handler: atom,
-    provider_params: %{},
-    token: String.t,
-    poll_timeout: integer,
-    http_opts: Keyword.t
+    provider_params: %{
+      #token: String.t,
+      #poll_timeout: integer | :infinity,
+      #response_timeout: integer | :infinity
+    }
   }
-  defstruct [:private, :name, :poller, :router, :handler, :token, :timeout, :http_opts]
+  defstruct [:private, :name, :provider, :handler, :provider_params]
 end

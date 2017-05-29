@@ -6,15 +6,15 @@ defmodule Agala.Provider.Telegram.Poller do
   Main worker module
   """
 
-  def get_updates_url(%BotParams{token: token}) do
+  def get_updates_url(%BotParams{provider_params: %{token: token}}) do
     "https://api.telegram.org/bot" <> token <> "/getUpdates"
   end
 
-  def get_updates_body(%BotParams{private: %{offset: offset}, poll_timeout: poll_timeout}) do
-    %{offset: offset, timeout: poll_timeout} |> Poison.encode!
+  def get_updates_body(%BotParams{private: %{offset: offset, timeout: timeout}}) do
+    %{offset: offset, timeout: timeout} |> Poison.encode!
   end
 
-  def get_updates_options(%BotParams{http_opts: http_opts}), do: http_opts
+  def get_updates_options(%BotParams{provider_params: %{http_opts: http_opts}}), do: http_opts
 
   def get_updates(bot_params = %BotParams{}) do
     HTTPoison.post(
@@ -66,7 +66,7 @@ defmodule Agala.Provider.Telegram.Poller do
     result
     |> process_messages(bot_params)
   end
-  def resolve_updates({:ok, %HTTPoison.Response{status_code: status_code, body: body}}, poller_params) do
+  def resolve_updates({:ok, %HTTPoison.Response{status_code: status_code, body: body}}, bot_params) do
     Logger.warn("HTTP response ended with status code #{status_code}")
     bot_params
   end

@@ -15,7 +15,7 @@ defmodule Agala.Mixfile do
 
   def application do
     [
-      applications: [:logger, :httpoison, :gproc],
+      applications: [:logger, :httpoison],
       mod: {Agala, []}
     ]
   end

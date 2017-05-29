@@ -17,7 +17,7 @@ defmodule Agala.Bot.PollHandler do
 
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
-    Logger.info("Starting poll handler with params:\n\t#{inspect poller_params}\r")
+    Logger.info("Starting poll handler with params:\n\t#{inspect bot_params}\r")
     {:ok, bot_params}
   end
 
@@ -34,7 +34,7 @@ defmodule Agala.Bot.PollHandler do
 
   ### Callbacks
 
-  @spec handle_cast({:polled_message, conn}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
+  @spec handle_cast({:polled_message, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
   def handle_cast({:polled_message, conn}, bot_params = %Agala.BotParams{handler: handler}) do
     handler.handle(conn, bot_params)
     |> Agala.response_with
