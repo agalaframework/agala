@@ -40,8 +40,8 @@ defmodule Agala.Provider.Telegram do
 
 
   ### Responser
-  import Agala.Provider.Telegram.Responser
+  use Agala.Provider.Telegram.Responser
 
   ### Poller
-  import Agala.Provider.Telegram.Poller
+  use Agala.Provider.Telegram.Poller
 end
