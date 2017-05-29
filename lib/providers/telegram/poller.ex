@@ -14,7 +14,7 @@ defmodule Agala.Provider.Telegram.Poller do
     %{offset: offset, timeout: timeout} |> Poison.encode!
   end
 
-  def get_updates_options(%BotParams{provider_params: %{http_opts: http_opts}}), do: http_opts
+  def get_updates_options(%BotParams{private: %{http_opts: http_opts}}), do: http_opts
 
   def get_updates(bot_params = %BotParams{}) do
     HTTPoison.post(
