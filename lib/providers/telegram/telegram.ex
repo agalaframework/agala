@@ -14,7 +14,7 @@ defmodule Agala.Provider.Telegram do
   end
   defp set_timeout(http_opts, bot_params) do
     http_opts
-    |> Keyword.put(:recv_timeout, get_in(bot_params, [:provider_params, :poll_timeout]))
+    |> Keyword.put(:recv_timeout, get_in(bot_params, [:provider_params, :poll_timeout]) || 5000)
   end
   # Populates HTTPoison options with proxy configuration from application config.
   defp set_proxy(http_opts, bot_params) do

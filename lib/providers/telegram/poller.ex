@@ -66,7 +66,7 @@ defmodule Agala.Provider.Telegram.Poller do
     result
     |> process_messages(bot_params)
   end
-  def resolve_updates({:ok, %HTTPoison.Response{status_code: status_code, body: body}}, bot_params) do
+  def resolve_updates({:ok, %HTTPoison.Response{status_code: status_code}}, bot_params) do
     Logger.warn("HTTP response ended with status code #{status_code}")
     bot_params
   end

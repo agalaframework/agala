@@ -12,4 +12,21 @@ defmodule Agala.BotParams do
     }
   }
   defstruct [:private, :name, :provider, :handler, :provider_params]
+
+  @behaviour Access
+  def fetch(bot_params, key) do
+    Map.fetch(bot_params, key)
+  end
+
+  def get(structure, key, default \\ nil) do
+    Map.get(structure, key, default)
+  end
+
+  def get_and_update(term, key, list) do
+    Map.get_and_update(term, key, list)
+  end
+
+  def pop(term, key) do
+    {get(term, key), term}
+  end
 end
