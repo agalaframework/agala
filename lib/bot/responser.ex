@@ -18,7 +18,8 @@ defmodule Agala.Bot.Responser do
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
     Logger.info("Starting responser with params:\n\t#{inspect bot_params}\r")
-    {:ok, bot_params}
+    Process.send(self(), :loop, [])
+    {:ok, bot_params.provider.init(bot_params, :responser)}
   end
 
   ### API
@@ -33,14 +34,8 @@ defmodule Agala.Bot.Responser do
   ### Callbacks
 
   @spec handle_cast({:send_conn, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
-  def handle_cast({:polled_message, conn}, bot_params = %Agala.BotParams{handler: handler}) do
-    HTTPoison.request(
-      conn.response.method,
-      conn.response.url,
-      conn.response.body,
-      conn.response.headers,
-      conn.response.http_opts || bot_params.http_opts
-    )
+  def handle_cast({:send_conn, conn}, bot_params = %Agala.BotParams{handler: handler}) do
+    bot_params.provider.response(conn, bot_params)
     {:noreply, bot_params}
   end
   def handle_cast(_, state), do: {:noreply, state}

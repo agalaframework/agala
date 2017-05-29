@@ -1,7 +1,5 @@
 defmodule Agala.Provider.Telegram.Helpers do
-  def base_url(conn) do
-    "https://api.telegram.org/bot" <> conn.poller_params.token
-  end
+  @base_url "https://api.telegram.org/bot"
 
   # def send_message(conn, chat_id, message, opts \\ []) do
   #   HTTPoison.request(
@@ -13,8 +11,24 @@ defmodule Agala.Provider.Telegram.Helpers do
   #   )
   # end
 
-  # defmacro __using__(_) do
-  #   quote location: :keep do
-  #   end
-  # end
+  defp base_url(route) do
+    fn token -> @base_url<>token<>route end
+  end
+
+  defp create_body(map, opts) do
+    Map.merge(map, Enum.into(opts, %{}), fn _,v1,_ -> v1 end)
+  end
+
+  def send_message(conn, chat_id, message, opts \\ []) do
+    Map.put(conn, :response, %{
+      method: :post,
+      url: base_url("/sendMessage"),
+      body: create_body(%{chat_id: chat_id, text: message}, opts)
+    })
+  end
+
+  defmacro __using__(_) do
+    quote location: :keep do
+    end
+  end
 end

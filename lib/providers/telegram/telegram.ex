@@ -3,22 +3,27 @@ defmodule Agala.Provider.Telegram do
     "https://api.telegram.org/bot" <> conn.poller_params.token
   end
 
-  def init(bot_params) do
+  def init(bot_params, module) do
     Map.put(bot_params, :private, %{
       http_opts: Keyword.new
                  |> set_proxy(bot_params)
-                 |> set_timeout(bot_params),
+                 |> set_timeout(bot_params, module),
       offset: 0,
       timeout: get_in(bot_params, [:provider_params, :poll_timeout])
     })
   end
-  defp set_timeout(http_opts, bot_params) do
+  defp set_timeout(http_opts, bot_params, module) do
+    source = case module do
+      :poller -> :poll_timeout
+      :responser -> :response_timeout
+    end
     http_opts
-    |> Keyword.put(:recv_timeout, get_in(bot_params, [:provider_params, :poll_timeout]) || 5000)
+    |> Keyword.put(:recv_timeout, get_in(bot_params, [:provider_params, source]) || 5000)
+    |> Keyword.put(:timeout, get_in(bot_params, [:provider_params, :timeout]) || 8000)
   end
   # Populates HTTPoison options with proxy configuration from application config.
   defp set_proxy(http_opts, bot_params) do
-    resolve_proxy(Keyword.new,
+    resolve_proxy(http_opts,
       get_in(bot_params, [:provider_params, :proxy_url]),
       get_in(bot_params, [:provider_params, :proxy_user]),
       get_in(bot_params, [:provider_params, :proxy_password])
@@ -33,7 +38,10 @@ defmodule Agala.Provider.Telegram do
     |> Keyword.put(:proxy_auth, {proxy_user, proxy_password})
   end
 
-  def response(conn, bot_params) do
-    # Here is telegram answer
-  end
+
+  ### Responser
+  import Agala.Provider.Telegram.Responser
+
+  ### Poller
+  import Agala.Provider.Telegram.Poller
 end
