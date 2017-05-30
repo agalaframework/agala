@@ -1,5 +1,6 @@
 defmodule Agala.BotParams do
 
+
   @type t :: %Agala.BotParams{
     private: %{},
     name: atom,

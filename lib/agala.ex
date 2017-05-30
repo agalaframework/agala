@@ -12,7 +12,7 @@ defmodule Agala do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    Logger.info("Starting Agala server")
+    Logger.info("Starting Agala server.")
     children = [
       supervisor(Registry, [:unique, Agala.Registry])
     ]

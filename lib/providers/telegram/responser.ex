@@ -9,6 +9,9 @@ defmodule Agala.Provider.Telegram.Responser do
         url.(bot_params.provider_params.token)
       end
 
+      @doc """
+      Main entry point method. Process the response
+      """
       def response(conn, bot_params) do
         HTTPoison.request(
           conn.response.method,

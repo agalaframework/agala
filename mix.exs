@@ -3,7 +3,7 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "1.0.3",
+     version: "1.2.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -30,7 +30,6 @@ defmodule Agala.Mixfile do
     [
       {:httpoison, "~> 0.11"},
       {:poison, "~> 3.1"},
-      {:config, github: "renderedtext/ex-config"},
       {:ex_doc, "~> 0.15", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
       {:credo, "~> 0.7", only: [:dev, :test]}
