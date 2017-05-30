@@ -21,10 +21,10 @@ defmodule Agala.Provider.Telegram.Poller do
 
       def get_updates(bot_params = %BotParams{}) do
         HTTPoison.post(
-          get_updates_url(bot_params),     # url
-          get_updates_body(bot_params),    # body
-          [],                              # headers
-          get_updates_options(bot_params)  # opts
+          get_updates_url(bot_params),            # url
+          get_updates_body(bot_params),           # body
+          [{"Content-Type","application/json"}],  # headers
+          get_updates_options(bot_params)         # opts
         )
         |> parse_body
         |> resolve_updates(bot_params)

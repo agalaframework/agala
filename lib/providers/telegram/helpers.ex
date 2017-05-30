@@ -25,7 +25,8 @@ defmodule Agala.Provider.Telegram.Helpers do
       method: :post,
       payload: %{
         url: base_url("/sendMessage"),
-        body: create_body(%{chat_id: chat_id, text: message}, opts)
+        body: create_body(%{chat_id: chat_id, text: message}, opts),
+        headers: [{"Content-Type","application/json"}]
       }
     })
   end
