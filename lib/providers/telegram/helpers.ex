@@ -19,8 +19,9 @@ defmodule Agala.Provider.Telegram.Helpers do
     Map.merge(map, Enum.into(opts, %{}), fn _,v1,_ -> v1 end)
   end
 
-  def send_message(conn, chat_id, message, opts \\ []) do
+  def send_message(conn, name, chat_id, message, opts \\ []) do
     Map.put(conn, :response, %{
+      name: name,
       method: :post,
       url: base_url("/sendMessage"),
       body: create_body(%{chat_id: chat_id, text: message}, opts)
