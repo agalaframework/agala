@@ -18,7 +18,6 @@ defmodule Agala.Bot.Responser do
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
     Logger.info("Starting responser with params:\n\t#{inspect bot_params}\r")
-    Process.send(self(), :loop, [])
     {:ok, bot_params.provider.init(bot_params, :responser)}
   end
 
