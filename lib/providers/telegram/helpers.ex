@@ -20,11 +20,13 @@ defmodule Agala.Provider.Telegram.Helpers do
   end
 
   def send_message(conn, name, chat_id, message, opts \\ []) do
-    Map.put(conn, :response, %{
+    Map.put(conn, :response, %Agala.Response{
       name: name,
       method: :post,
-      url: base_url("/sendMessage"),
-      body: create_body(%{chat_id: chat_id, text: message}, opts)
+      payload: %{
+        url: base_url("/sendMessage"),
+        body: create_body(%{chat_id: chat_id, text: message}, opts)
+      }
     })
   end
 

@@ -1,11 +1,11 @@
 defmodule Agala.Provider.Telegram.Responser do
   defmacro __using__(_) do
     quote location: :keep do
-      defp create_body(conn = %Agala.Conn{response: %{body: body}}) when is_bitstring(body), do: body
-      defp create_body(conn = %Agala.Conn{response: %{body: body}}) when is_map(body), do: body
+      defp create_body(conn = %Agala.Conn{response: %{payload: %{body: body}}}) when is_bitstring(body), do: body
+      defp create_body(conn = %Agala.Conn{response: %{payload: %{body: body}}}) when is_map(body), do: body
       defp create_body(conn), do: ""
 
-      defp create_url(conn = %Agala.Conn{response: %{url: url}}, bot_params) when is_function(url) do
+      defp create_url(conn = %Agala.Conn{response: %{payload: %{url: url}}}, bot_params) when is_function(url) do
         url.(bot_params.provider_params.token)
       end
 
