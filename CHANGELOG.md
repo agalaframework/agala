@@ -1,3 +1,9 @@
+### 1.1.0
+
+### Changes
+
+* Total remaking of the framework. Changed everything.
+
 ### 1.0.3
 
 #### Bugs
