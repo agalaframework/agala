@@ -16,9 +16,8 @@ defmodule Mix.Tasks.Agala.New do
     {:eex, "new/config/test.exs", "config/test.exs"},
 
     # Lib
-    {:eex, "new/lib/app_name.ex", "lib/app_name.ex"},
-    {:eex, "new/lib/handlers/app_module_handler.ex", "lib/handlers/app_module_handler.ex"},
-    {:keep, "new/lib/routers", "lib/routers"},
+    {:eex, "new/lib/application.ex", "lib/application.ex"},
+    {:eex, "new/lib/echo_handler.ex", "lib/echo_handler.ex"},
 
     # Mix
     {:eex, "new/mix.exs", "mix.exs"},
@@ -70,7 +69,7 @@ defmodule Mix.Tasks.Agala.New do
       "You have #{System.version}. Please update accordingly"
     end
 
-    {opts, argv} = 
+    {opts, argv} =
       case OptionParser.parse(argv, strict: @switches) do
         {opts, argv, []} ->
           {opts, argv}
@@ -97,8 +96,8 @@ defmodule Mix.Tasks.Agala.New do
 
     in_umbrella? = in_umbrella?(path)
 
-    binding = 
-      [ 
+    binding =
+      [
         app_name: app,
         app_module: mod,
         agala_dep: agala_dep(agala_path),
@@ -213,7 +212,7 @@ defmodule Mix.Tasks.Agala.New do
 
   defp agala_dep("deps/agala"), do: ~s[{:agala, "~> #{@version}"}]
   defp agala_dep(path), do: ~s[{:agala, path: #{inspect path}, override: true}]
-  
+
   defp agala_path(path, true) do
     absolute = Path.expand(path)
     relative = Path.relative_to(absolute, @agala)
