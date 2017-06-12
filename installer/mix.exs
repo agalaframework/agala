@@ -3,7 +3,7 @@ defmodule Agala.New.Mixfile do
 
   def project do
     [app: :agala_new,
-     version: "1.1.0",
+     version: "2.0.0",
      elixir: "~> 1.4"
     ]
   end

@@ -64,8 +64,8 @@ defmodule Mix.Tasks.Agala.New do
   end
 
   def run(argv) do
-    unless Version.match?(System.version, "~> 1.3") do
-      Mix.raise "Agala v#{@version} requires at least Elixir v1.3.\n"<>
+    unless Version.match?(System.version, "~> 1.4") do
+      Mix.raise "Agala v#{@version} requires at least Elixir v1.4.\n"<>
       "You have #{System.version}. Please update accordingly"
     end
 

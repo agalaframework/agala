@@ -14,9 +14,6 @@ defmodule Agala.Conn do
     on provider type.
   """
 
-
-
-
   defstruct [:request, :response]
 
   @type t :: %Agala.Conn{
