@@ -1,4 +1,7 @@
 defmodule Agala.Provider.Telegram do
+  @moduledoc """
+  Module providing adapter for Telegram
+  """
   def base_url(conn) do
     "https://api.telegram.org/bot" <> conn.poller_params.token
   end
@@ -43,5 +46,11 @@ defmodule Agala.Provider.Telegram do
   use Agala.Provider.Telegram.Responser
 
   ### Poller
-  use Agala.Provider.Telegram.Poller
+  use Agala.Provider.Telegram.PollServer
+
+  defmacro __using__(:handler) do
+    quote location: :keep do
+      import Agala.Provider.Telegram.Helpers
+    end
+  end
 end

@@ -1,9 +1,11 @@
 defmodule Agala.Bot.Responser do
+  @callback response(conn :: Agala.Conn.t, Agala.BotParams.t) :: any
+
   use GenServer
   require Logger
 
   @moduledoc """
-  Module, represents the bank which gets messages from poller and the syncronosly proceeds them
+  Module, represents the bank which gets messages from poller and then syncronosly proceeds them
   """
 
   defp via_tuple(name) do

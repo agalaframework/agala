@@ -1,4 +1,5 @@
 defmodule Agala.Bot.PollServer do
+  @callback get_updates(bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
   use GenServer
   require Logger
 

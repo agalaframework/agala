@@ -1,6 +1,8 @@
 defmodule Agala.Provider.Telegram.Responser do
   defmacro __using__(_) do
     quote location: :keep do
+      @behaviour Agala.Bot.Responser
+
       defp create_body(conn = %Agala.Conn{response: %{payload: %{body: body}}}) when is_bitstring(body), do: body
       defp create_body(conn = %Agala.Conn{response: %{payload: %{body: body}}}) when is_map(body), do: body |> Poison.encode!
       defp create_body(conn), do: ""

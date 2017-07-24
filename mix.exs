@@ -29,7 +29,7 @@ defmodule Agala.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 0.11"},
+      {:httpoison, "~> 0.12"},
       {:poison, "~> 3.1"},
       {:ex_doc, "~> 0.16", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},

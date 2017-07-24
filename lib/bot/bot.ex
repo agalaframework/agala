@@ -35,6 +35,6 @@ defmodule Agala.Bot do
       worker(Agala.Bot.Responser, [bot_params])
     ]
 
-    supervise(children, strategy: :one_for_one)
+    supervise(children, strategy: :one_for_one, max_restarts: 1000, max_seconds: 1)
   end
 end
