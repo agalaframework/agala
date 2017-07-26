@@ -4,7 +4,7 @@ defmodule Agala.Mixfile do
   def project do
     [app: :agala,
      version: "2.0.0",
-     elixir: "~> 1.4",
+     elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
@@ -16,7 +16,7 @@ defmodule Agala.Mixfile do
 
   def application do
     [
-      applications: [:logger, :httpoison],
+      applications: [:logger],
       mod: {Agala, []}
     ]
   end
@@ -29,8 +29,6 @@ defmodule Agala.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 0.12"},
-      {:poison, "~> 3.1"},
       {:ex_doc, "~> 0.16", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
       {:credo, "~> 0.8", only: [:dev, :test]}

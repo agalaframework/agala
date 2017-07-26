@@ -14,16 +14,15 @@ defmodule Agala.Bot do
   * `Agala.Bot.Responser` - module, that converts your application responses into form,
     acceptable by the recepient
   """
-
-  @doc """
-  Main function, starts the supervision tree
-  """
   use Supervisor
 
   defp via_tuple(name) do
     {:via, Registry, {Agala.Registry, {:bot, name}}}
   end
 
+  @doc """
+  Main function, starts the supervision tree
+  """
   def start_link(bot_params) do
     Supervisor.start_link(__MODULE__, bot_params, name: via_tuple(bot_params.name))
   end
