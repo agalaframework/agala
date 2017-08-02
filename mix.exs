@@ -44,9 +44,10 @@ defmodule Agala.Mixfile do
   defp docs do
     [
       main: "getting-started",
+      logo: "extras/agala.svg.png",
       extras: [
-        "docs/Getting Started.md",
-        "docs/Usage.md"
+        "extras/Getting Started.md",
+        "extras/Usage.md"
       ]
     ]
   end
