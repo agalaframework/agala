@@ -1,4 +1,4 @@
-defmodule Agala.Bot.PollHandler do
+defmodule Agala.Bot.Handler do
   use GenServer
   require Logger
 
@@ -7,7 +7,7 @@ defmodule Agala.Bot.PollHandler do
   """
 
   defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:poll_handler, name}}}
+    {:via, Registry, {Agala.Registry, {:handler, name}}}
   end
 
   @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start
@@ -17,7 +17,7 @@ defmodule Agala.Bot.PollHandler do
 
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
-    Logger.info(fn -> "Starting poll handler with params:\n\t#{inspect bot_params}\r" end)
+    Logger.info(fn -> "Starting handler with params:\n\t#{inspect bot_params}\r" end)
     {:ok, bot_params}
   end
 
