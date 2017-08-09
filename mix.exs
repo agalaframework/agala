@@ -4,7 +4,7 @@ defmodule Agala.Mixfile do
   def project do
     [app: :agala,
      version: "2.0.0",
-     elixir: "~> 1.5",
+     elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
@@ -37,7 +37,7 @@ defmodule Agala.Mixfile do
 
   defp description do
     """
-    Full featured Telegram bot framework.
+    Full featured Messaging bot framework.
     """
   end
 
@@ -56,7 +56,7 @@ defmodule Agala.Mixfile do
     [
       maintainers: ["Dmitry Rubinstein", "Vladimir Barsukov"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/virviil/agala"},
+      links: %{"GitHub" => "https://github.com/agalaframework/agala"},
       files: ~w(mix.exs README* CHANGELOG* lib)
     ]
   end

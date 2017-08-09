@@ -22,7 +22,7 @@ defmodule Agala.Bot.PollServer do
       def init(bot_params) do
         Logger.info("Starting receiver with params:\n\t#{inspect bot_params}\r")
         Process.send(self(), :loop, [])
-        {:ok, bot_params.provider.init(bot_params, :receiver)}
+        bot_params.provider.init(bot_params, :receiver)
       end
 
       @spec handle_info(:loop, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
