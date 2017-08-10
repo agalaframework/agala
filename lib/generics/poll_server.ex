@@ -28,7 +28,11 @@ defmodule Agala.Bot.PollServer do
       @spec handle_info(:loop, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
       def handle_info(:loop, bot_params) do
         Process.send(self(), :loop, [])
-        {:noreply, get_updates(bot_params)}
+        new_params = get_updates(bot_params)
+        case get_in(new_params, ([:private, :restart])) do
+          true -> {:stop, :normal}
+          _ -> {:noreply, new_params}
+        end
       end
       def handle_info(_, state), do: {:noreply, state}
     end
