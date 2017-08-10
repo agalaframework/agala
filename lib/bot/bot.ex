@@ -31,7 +31,8 @@ defmodule Agala.Bot do
     children = [
       worker(Module.concat(bot_params.provider, Receiver), [bot_params]),
       worker(Agala.Bot.Handler, [bot_params]),
-      worker(Agala.Bot.Responser, [bot_params])
+      worker(Agala.Bot.Responser, [bot_params]),
+      worker(Agala.Bot.LetItCrash, [bot_params])
     ]
 
     supervise(children, strategy: :one_for_one, max_restarts: 1000, max_seconds: 1)
