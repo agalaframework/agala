@@ -23,7 +23,7 @@ defmodule Agala.Bot.Handler do
 
   ### API
 
-  def cast_to_handle(message, bot_params) do
+  def cast_to_chain(message, bot_params) do
     GenServer.cast(
       via_tuple(bot_params.name),
       {:polled_message, %Agala.Conn{
@@ -37,7 +37,7 @@ defmodule Agala.Bot.Handler do
   @spec handle_cast({:polled_message, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
   def handle_cast({:polled_message, conn}, bot_params = %Agala.BotParams{handler: handler}) do
     conn
-    |> handler.handle(bot_params)
+    |> handler.call(bot_params)
     |> Agala.response_with
     {:noreply, bot_params}
   end

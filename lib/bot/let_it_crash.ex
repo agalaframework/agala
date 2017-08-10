@@ -1,5 +1,4 @@
 defmodule Agala.Bot.LetItCrash do
-  use Agent
   require Logger
 
   defp via_tuple(name) do
