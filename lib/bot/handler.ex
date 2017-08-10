@@ -27,7 +27,8 @@ defmodule Agala.Bot.Handler do
     GenServer.cast(
       via_tuple(bot_params.name),
       {:polled_message, %Agala.Conn{
-        request: message
+        request: message,
+        request_bot_params: bot_params
       }}
     )
   end
