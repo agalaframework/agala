@@ -17,7 +17,7 @@ defmodule Agala.Bot.Handler do
 
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
-    Logger.info(fn -> "Starting handler with params:\n\t#{inspect bot_params}\r" end)
+    Logger.debug(fn -> "Starting handler with params:\n\t#{inspect bot_params}\r" end)
     {:ok, bot_params}
   end
 

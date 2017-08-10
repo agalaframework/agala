@@ -14,10 +14,11 @@ defmodule Agala.Conn do
     on provider type.
   """
 
-  defstruct [:request, :response]
+  defstruct [:request, :response, :halted]
 
   @type t :: %Agala.Conn{
     request: Map.t,
-    response: Agala.Response.t
+    response: Agala.Response.t,
+    halted: boolean
   }
 end

@@ -1,4 +1,4 @@
-defmodule Agala.Bot.PollServer do
+defmodule Agala.Bot.Receiver do
   @callback get_updates(bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
   @moduledoc """
   TODO
@@ -7,7 +7,7 @@ defmodule Agala.Bot.PollServer do
     quote location: :keep do
       use GenServer
       require Logger
-      @behaviour Agala.Bot.PollServer
+      @behaviour Agala.Bot.Receiver
 
       defp via_tuple(name) do
         {:via, Registry, {Agala.Registry, {:receiver, name}}}
@@ -20,7 +20,7 @@ defmodule Agala.Bot.PollServer do
 
       @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
       def init(bot_params) do
-        Logger.info("Starting receiver with params:\n\t#{inspect bot_params}\r")
+        Logger.debug("Starting receiver with params:\n\t#{inspect bot_params}\r")
         Process.send(self(), :loop, [])
         bot_params.provider.init(bot_params, :receiver)
       end
