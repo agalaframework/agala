@@ -21,4 +21,15 @@ defmodule Agala.Conn do
     response: Agala.Response.t,
     halted: boolean
   }
+
+
+  @doc """
+  Halts the Agala.Chain pipeline by preventing further plugs downstream from being
+  invoked. See the docs for `Agala.Chain.Builder` for more information on halting a
+  plug pipeline.
+  """
+  @spec halt(t) :: t
+  def halt(%Agala.Conn{} = conn) do
+    %{conn | halted: true}
+  end
 end
