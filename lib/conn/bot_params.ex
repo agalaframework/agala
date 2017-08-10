@@ -26,30 +26,30 @@ defmodule Agala.BotParams do
   """
   @type t :: %Agala.BotParams{
     private: %{},
-    name: atom,
+    name: String.t | atom,
     provider: atom,
     handler: atom,
-    provider_params: %{
-      #token: String.t,
-      #poll_timeout: integer | :infinity,
-      #response_timeout: integer | :infinity
-    }
+    provider_params: Map.t
   }
   defstruct [:private, :name, :provider, :handler, :provider_params]
 
   @behaviour Access
+  @doc false
   def fetch(bot_params, key) do
     Map.fetch(bot_params, key)
   end
 
+  @doc false
   def get(structure, key, default \\ nil) do
     Map.get(structure, key, default)
   end
 
+  @doc false
   def get_and_update(term, key, list) do
     Map.get_and_update(term, key, list)
   end
 
+  @doc false
   def pop(term, key) do
     {get(term, key), term}
   end

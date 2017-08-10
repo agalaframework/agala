@@ -25,10 +25,10 @@ defmodule Agala.Bot.Responser do
 
   ### API
 
-  def cast_to_handle(conn = %Agala.Conn{response: %Agala.Response{name: name, method: method}}) do
-    case method do
-      :noaction -> :ok
-      _ -> GenServer.cast(via_tuple(name), {:send_conn, conn})
+  def cast_to_handle(conn = %Agala.Conn{responser_name: name, halted: halted}) do
+    case halted do
+      true -> :ok
+      false -> GenServer.cast(via_tuple(name), {:send_conn, conn})
     end
   end
 
