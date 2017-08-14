@@ -30,7 +30,7 @@ defmodule Agala.Bot.Receiver do
         Process.send(self(), :loop, [])
         new_params = get_updates(bot_params)
         case get_in(new_params, ([:private, :restart])) do
-          true -> {:stop, :normal}
+          true -> {:stop, :normal, new_params}
           _ -> {:noreply, new_params}
         end
       end
