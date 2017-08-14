@@ -23,6 +23,7 @@ defmodule Agala.Bot.Handler do
 
   ### API
 
+  @spec cast_to_chain(message :: any, bot_params :: Agala.BotParams.t) :: :ok
   def cast_to_chain(message, bot_params) do
     GenServer.cast(
       via_tuple(bot_params.name),

@@ -19,11 +19,11 @@ defmodule Agala.Chain do
   ## Examples
   Here's an example of a function plug:
       def json_header_plug(conn, opts) do
-        Plug.Conn.put_resp_content_type(conn, "application/json")
+        Agala.Conn.put_resp_content_type(conn, "application/json")
       end
   Here's an example of a module plug:
       defmodule JSONHeaderPlug do
-        import Plug.Conn
+        import Agala.Conn
         def init(opts) do
           opts
         end

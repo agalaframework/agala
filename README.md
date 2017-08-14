@@ -1,6 +1,6 @@
 # Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://travis-ci.org/agalaframework/agala.svg?branch=develop)](https://travis-ci.org/agalaframework/agala) [![Deps Status](https://beta.hexfaktor.org/badge/all/github/Virviil/agala.svg?branch=develop)](https://beta.hexfaktor.org/github/Virviil/agala) [![Coverage](http://inch-ci.org/github/virviil/agala.svg)](http://inch-ci.org/github/virviil/agala)
 
-Full-featured Telegram bot framework.
+Full-featured Messaging bot framework.
 
 ## Installation via Mix
 

@@ -5,7 +5,8 @@ defmodule Agala.Bot.Responser do
   require Logger
 
   @moduledoc """
-  Module, represents the bank which gets messages from poller and then syncronosly proceeds them
+  Module, represents the bank which gets Agala.Conn from Chain
+  and then syncronosly proceeds them to response
   """
 
   defp via_tuple(name) do
