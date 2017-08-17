@@ -6,13 +6,9 @@ defmodule Agala.Bot.Handler do
   Module, represents the bank which gets messages from poller and then syncronosly proceeds them
   """
 
-  defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:handler, name}}}
-  end
-
   @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start
   def start_link(bot_params) do
-    GenServer.start_link(__MODULE__, bot_params, name: via_tuple(bot_params.name))
+    GenServer.start_link(__MODULE__, bot_params)
   end
 
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
@@ -23,11 +19,11 @@ defmodule Agala.Bot.Handler do
 
   ### API
 
-  @spec cast_to_chain(message :: any, bot_params :: Agala.BotParams.t) :: :ok
-  def cast_to_chain(message, bot_params) do
-    GenServer.cast(
-      via_tuple(bot_params.name),
-      {:polled_message, %Agala.Conn{
+  @spec proceed_sync(pid :: pid, message :: any, bot_params :: Agala.BotParams.t) :: term
+  def proceed_sync(pid, message, bot_params) do
+    GenServer.call(
+      pid,
+      {:proceed_sync, %Agala.Conn{
         request: message,
         request_bot_params: bot_params
       }}
@@ -36,12 +32,12 @@ defmodule Agala.Bot.Handler do
 
   ### Callbacks
 
-  @spec handle_cast({:polled_message, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
-  def handle_cast({:polled_message, conn}, bot_params = %Agala.BotParams{handler: handler}) do
+  @spec handle_call({:proceed_sync, conn :: Agala.Conn.t}, from :: pid, bot_params :: Agala.BotParams.t) :: {:reply, Agala.BotParams.t}
+  def handle_call({:polled_message, conn}, _, bot_params = %Agala.BotParams{handler: handler}) do
     conn
     |> handler.call(bot_params)
     |> Agala.response_with
-    {:noreply, bot_params}
+    {:reply, :ok, bot_params}
   end
-  def handle_cast(_, state), do: {:noreply, state}
+  def handle_call(request, from, state), do: super(request, from, state)
 end

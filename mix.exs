@@ -29,6 +29,7 @@ defmodule Agala.Mixfile do
 
   defp deps do
     [
+      {:poolboy, "~> 1.5"},
       {:ex_doc, "~> 0.16", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
       {:credo, "~> 0.8", only: [:dev, :test]}

@@ -40,4 +40,12 @@ defmodule Agala.Chain do
 
   @callback init(opts) :: opts
   @callback call(Agala.Conn.t, opts) :: Agala.Conn.t
+
+  @doc """
+  Chain as a function, sends the response to the same bot, which reseived the message
+  """
+  @spec loopback(conn :: Agala.Conn.t, opts :: any) :: Agala.Conn.t
+  def loopback(conn = %Agala.Conn{request_bot_params: %{name: name}}, _opts) do
+    Agala.Conn.send_to(conn, name)
+  end
 end

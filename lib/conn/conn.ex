@@ -34,4 +34,9 @@ defmodule Agala.Conn do
   def halt(%Agala.Conn{} = conn) do
     %{conn | halted: true}
   end
+
+  def send_to(%Agala.Conn{} = conn, name) do
+    conn
+    |> Map.put(:responser_name, name)
+  end
 end
