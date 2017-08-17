@@ -33,7 +33,7 @@ defmodule Agala.Bot.Handler do
   ### Callbacks
 
   @spec handle_call({:proceed_sync, conn :: Agala.Conn.t}, from :: pid, bot_params :: Agala.BotParams.t) :: {:reply, Agala.BotParams.t}
-  def handle_call({:polled_message, conn}, _, bot_params = %Agala.BotParams{handler: handler}) do
+  def handle_call({:proceed_sync, conn}, _, bot_params = %Agala.BotParams{handler: handler}) do
     conn
     |> handler.call(bot_params)
     |> Agala.response_with

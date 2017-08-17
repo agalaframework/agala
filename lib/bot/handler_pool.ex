@@ -14,7 +14,7 @@ defmodule Agala.Bot.HandlerPool do
     :poolboy.child_spec(
       via_tuple(name),              # name
       config(name, pool_size),      # pool_options
-      [bot_params]                  # worker start params
+      bot_params                    # worker start params
     )
   end
 
