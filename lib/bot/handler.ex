@@ -23,11 +23,11 @@ defmodule Agala.Bot.Handler do
 
   ### API
 
-  @spec cast_to_chain(message :: any, bot_params :: Agala.BotParams.t) :: :ok
-  def cast_to_chain(message, bot_params) do
+  @spec handle(message :: any, bot_params :: Agala.BotParams.t) :: :ok
+  def handle(message, bot_params) do
     GenServer.cast(
       via_tuple(bot_params.name),
-      {:polled_message, %Agala.Conn{
+      {:handle, %Agala.Conn{
         request: message,
         request_bot_params: bot_params
       }}
@@ -36,8 +36,8 @@ defmodule Agala.Bot.Handler do
 
   ### Callbacks
 
-  @spec handle_cast({:polled_message, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
-  def handle_cast({:polled_message, conn}, bot_params = %Agala.BotParams{handler: handler}) do
+  @spec handle_cast({:handle, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
+  def handle_cast({:handle, conn}, bot_params = %Agala.BotParams{handler: handler}) do
     conn
     |> handler.call(bot_params)
     |> Agala.response_with

@@ -1,5 +1,5 @@
 defmodule Agala.Bot.Receiver do
-  @callback get_updates(bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
+  @callback get_updates(notify_with :: fun, bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
   @moduledoc """
   TODO
   """
@@ -28,7 +28,11 @@ defmodule Agala.Bot.Receiver do
       @spec handle_info(:loop, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
       def handle_info(:loop, bot_params) do
         Process.send(self(), :loop, [])
-        new_params = get_updates(bot_params)
+        # this callback will be call to asyncronosly push messages to handler
+        notify_with = fn message ->
+          Agala.Bot.Handler.handle(message, bot_params)
+        end
+        new_params = get_updates(notify_with, bot_params)
         case get_in(new_params, ([:private, :restart])) do
           true -> {:stop, :normal, new_params}
           _ -> {:noreply, new_params}

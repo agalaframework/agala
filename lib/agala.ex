@@ -33,7 +33,7 @@ defmodule Agala do
     * `conn` - connection with populated `Agala.Conn.Response`.
   """
   @spec response_with(conn :: Agala.Conn.t) :: :ok
-  defdelegate response_with(conn), to: Agala.Bot.Responser, as: :cast_to_handle
+  defdelegate response_with(conn), to: Agala.Bot.Responser, as: :response
 
   ### LetItCrashAgent
   defdelegate set(bot_params, key, value), to: Agala.Bot.LetItCrash
