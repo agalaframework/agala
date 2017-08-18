@@ -1,4 +1,5 @@
 defmodule Agala.Bot.Responser do
+  require Logger
   @callback response(conn :: Agala.Conn.t, Agala.BotParams.t) :: any
   @moduledoc """
   Behaviour, represents the bank which gets Agala.Conn from Chain
@@ -40,10 +41,11 @@ defmodule Agala.Bot.Responser do
     end
   end
 
-  def response(conn = %Agala.Conn{responser_name: name, halted: halted}) do
-    case halted do
-      true -> :ok
-      _ -> GenServer.cast(via_tuple(name), {:response, conn})
-    end
+  def response(%Agala.Conn{responser_name: nil}) do
+    Logger.warn("Responser's name was not specified for the connection. Please, check your chain.")
+  end
+  def response(%Agala.Conn{halted: true}), do: :ok
+  def response(conn = %Agala.Conn{responser_name: name}) do
+    GenServer.cast(via_tuple(name), {:response, conn})
   end
 end
