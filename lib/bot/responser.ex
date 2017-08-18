@@ -34,7 +34,7 @@ defmodule Agala.Bot.Responser do
 
       @spec handle_cast({:send_conn, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
       def handle_cast({:response, conn}, bot_params = %Agala.BotParams{}) do
-        bot_params.provider.response(conn, bot_params)
+        bot_params.provider.get_responser().response(conn, bot_params)
         {:noreply, bot_params}
       end
       def handle_cast(_, state), do: {:noreply, state}

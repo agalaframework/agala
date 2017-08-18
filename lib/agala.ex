@@ -38,4 +38,18 @@ defmodule Agala do
   ### LetItCrashAgent
   defdelegate set(bot_params, key, value), to: Agala.Bot.LetItCrash
   defdelegate get(bot_params, key), to: Agala.Bot.LetItCrash
+
+  @doc """
+  This method provides functionality to send request and get response
+  to bot responser's provider. You can use it
+  """
+  # Agala.execute(fn conn -> Users.get(conn, user_ids, fields, name_case) end, bot_params)
+  def execute(fun, bot_params) do
+    bot_params = bot_params
+    |> bot_params.provider.init(:responser)
+
+    fun.(%Agala.Conn{})
+    |> Agala.Conn.send_to(bot_params.name)
+    |> bot_params.provider.get_responser().response(bot_params)
+  end
 end
