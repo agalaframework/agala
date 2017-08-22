@@ -45,7 +45,7 @@ defmodule Agala do
   """
   # Agala.execute(fn conn -> Users.get(conn, user_ids, fields, name_case) end, bot_params)
   def execute(fun, bot_params) do
-    bot_params = bot_params
+    {:ok, bot_params} = bot_params
     |> bot_params.provider.init(:responser)
 
     fun.(%Agala.Conn{})
