@@ -3,7 +3,7 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "2.0.0",
+     version: "2.0.0-rc1",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -37,7 +37,7 @@ defmodule Agala.Mixfile do
 
   defp description do
     """
-    Full featured Messaging bot framework.
+    Full featured messaging bot framework.
     """
   end
 
