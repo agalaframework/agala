@@ -8,7 +8,7 @@ defmodule <%= app_module %>.Mixfile do
      config_path: "../../config/config.exs",
      deps_path: "../../deps",
      lockfile: "../../mix.lock",<% end %>
-     elixir: "~> 1.3",
+     elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -32,4 +32,3 @@ defmodule <%= app_module %>.Mixfile do
     ]
   end
 end
-

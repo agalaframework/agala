@@ -4,10 +4,11 @@ cd installer
 echo "Building archive..."
 MIX_ENV=prod mix archive.build
 echo "Done"
-echo "Installing archive"
+echo "Installing archive..."
 mix archive.install --force
 ARCH=$(ls | grep ez)
 echo "Done"
 echo "Copying archive /installer/"$ARCH" to agala_new.ex"
 mv $ARCH ../agala_new.ez
+rm -rf *.ez
 echo "Done"

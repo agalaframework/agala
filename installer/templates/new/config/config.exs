@@ -8,18 +8,11 @@ use Mix.Config
 <%= if namespaced? do %># General namespace configuration
 config :<%= app_name %>,
   namespace: <%= app_module %>
-
-  <% end %># General application configuration
-config :agala,
-  request_timeout: 100,
-  router: Agala.Router.Direct,
-  handler: <%= app_module %>.Handler
-
-  # Configures Elixir's Logger
+<% end %>
+# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n"
 
   # Import environment specific config. This must remain at the bottom
   # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
-

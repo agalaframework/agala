@@ -3,12 +3,9 @@ defmodule Agala do
   require Logger
 
   @moduledoc """
-  Main framework module. Copy readme from github here
+  Main framework module. Basic `Application`. Should be started as external application
+  in your `mix.exs` file in order to use **Agala**.
   """
-
-  @default_timeout 3000
-  @default_router Agala.Router.Direct
-  @default_handler Agala.Handler.Echo
 
   @doc """
   Main function, starts the supervision tree
@@ -16,16 +13,10 @@ defmodule Agala do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    token = get_token
-    Logger.info("Starting Agala server...")
-    Logger.info("Defined token: #{token}")
+    Logger.debug("Starting Agala server")
+    # We are starting only registry. All bots can be started by user in there applications.
     children = [
-      worker(Agala.Bot.Poller, [
-        %{timeout: get_timeout, offset: 0}
-        |> set_proxy
-      ]),
-      supervisor(Task.Supervisor, [[name: Agala.Bot.TasksSupervisor]]),
-      supervisor(get_router(), [])
+      supervisor(Registry, [:unique, Agala.Registry])
     ]
 
     opts = [strategy: :one_for_one]
@@ -33,77 +24,32 @@ defmodule Agala do
   end
 
   @doc """
-  Gets timeout from configuration
+  Function in the global scope. Starts the navigation process of the response. Calling this universal
+  function will send response to every existing bot.
+
+  Handler's response is automaticly casted to this function.
+
+  ## Params
+    * `conn` - connection with populated `Agala.Conn.Response`.
   """
-  def get_timeout do
-    Application.get_env(
-      :agala, :request_timeout, @default_timeout
-    )
-  end
+  @spec response_with(conn :: Agala.Conn.t) :: :ok
+  defdelegate response_with(conn), to: Agala.Bot.Responser, as: :response
+
+  ### LetItCrashAgent
+  defdelegate set(bot_params, key, value), to: Agala.Bot.LetItCrash
+  defdelegate get(bot_params, key), to: Agala.Bot.LetItCrash
 
   @doc """
-  Gets router from the configuration
+  This method provides functionality to send request and get response
+  to bot responser's provider. You can use it
   """
-  def get_router do
-    Application.get_env(:agala, :router, @default_router)
-  end
+  # Agala.execute(fn conn -> Users.get(conn, user_ids, fields, name_case) end, bot_params)
+  def execute(fun, bot_params) do
+    {:ok, bot_params} = bot_params
+    |> bot_params.provider.init(:responser)
 
-  @doc """
-  Gets handler from configuration
-  """
-  def get_handler do
-    Application.get_env(:agala, :handler, @default_handler)
-  end
-
-  @doc """
-  Gets proxy from the configuration
-  """
-  def get_proxy do
-    Application.get_env(:agala, :proxy)
-  end
-
-
-  @doc """
-  Gets proxy auth parameters from the configuration
-  """
-  def get_proxy_auth do
-    Application.get_env(:agala, :proxy_auth)
-  end
-
-  defp set_proxy(opts) do
-    resolve_proxy(opts, get_proxy, get_proxy_auth)
-  end
-  defp resolve_proxy(opts, nil, _auth) do
-    opts
-  end
-  defp resolve_proxy(opts, proxy, nil) do
-    opts
-    |> Map.put(:proxy, proxy)
-  end
-  defp resolve_proxy(opts, proxy, proxy_auth) do
-    opts
-    |> Map.put(:proxy, proxy)
-    |> Map.put(:proxy_auth, proxy_auth)
-  end
-
-
-  def get_token do
-    token_name = Application.get_env(:agala, :token_env)
-    if is_nil(token_name) do
-      raise "Invalid token variable name. Please define :agala,\
-       :token_name in config.exs"
-    else
-      get_token_from_env(token_name)
-    end
-  end
-
-  defp get_token_from_env(token_name) do
-    token = System.get_env(token_name)
-    if is_nil(token) do
-      raise "Invalid token name. Please export token to environment\
-       variable with name defined in :agala, :token_name in config.exs"
-    else
-      token
-    end
+    fun.(%Agala.Conn{})
+    |> Agala.Conn.send_to(bot_params.name)
+    |> bot_params.provider.get_responser().response(bot_params)
   end
 end

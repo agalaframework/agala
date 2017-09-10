@@ -3,19 +3,20 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "1.0.3",
-     elixir: "~> 1.3",
+     version: "2.0.0-rc1",
+     elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
      package: package(),
      aliases: aliases(),
+     docs: docs(),
      deps: deps()]
   end
 
   def application do
     [
-      applications: [:logger, :httpoison, :gproc],
+      applications: [:logger],
       mod: {Agala, []}
     ]
   end
@@ -28,28 +29,35 @@ defmodule Agala.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 0.11"},
-      {:poison, "~> 3.1"},
-      {:gproc, "~> 0.6.1"},
-      {:ex_doc, "~> 0.15", only: :dev},
+      {:ex_doc, "~> 0.16", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
-      {:credo, "~> 0.7", only: [:dev, :test]}
+      {:credo, "~> 0.8", only: [:dev, :test]}
     ]
   end
 
   defp description do
     """
-    Full featured Telegram bot framework.
+    Full featured messaging bot framework.
     """
+  end
+
+  defp docs do
+    [
+      main: "getting-started",
+      logo: "extras/agala.svg.png",
+      extras: [
+        "extras/Getting Started.md",
+        "extras/Usage.md"
+      ]
+    ]
   end
 
   defp package do
     [
       maintainers: ["Dmitry Rubinstein", "Vladimir Barsukov"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/virviil/agala"},
+      links: %{"GitHub" => "https://github.com/agalaframework/agala"},
       files: ~w(mix.exs README* CHANGELOG* lib)
     ]
   end
 end
-
