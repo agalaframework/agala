@@ -48,13 +48,17 @@ defmodule Agala.Conn do
   @doc """
   Halts the Agala.Chain pipeline by preventing further plugs downstream from being
   invoked. See the docs for `Agala.Chain.Builder` for more information on halting a
-  plug pipeline.
+  Chain pipeline.
   """
   @spec halt(t) :: t
   def halt(%Agala.Conn{} = conn) do
     %{conn | halted: true}
   end
 
+  @doc """
+  Specifies the name for the bot, which will send the response back
+  to side APIs.
+  """
   def send_to(%Agala.Conn{} = conn, name) do
     conn
     |> Map.put(:responser_name, name)

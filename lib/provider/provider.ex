@@ -43,6 +43,9 @@ defmodule Agala.Provider do
         Module.concat(__MODULE__, Responser)
       end
 
+      defmacro defmethod(params, body) do
+      end
+
       defoverridable [get_receiver: 0, get_responser: 0]
     end
   end

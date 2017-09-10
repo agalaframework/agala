@@ -4,8 +4,6 @@ defmodule Foo do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    IO.inspect "Calling FOO"
-    IO.inspect conn
     %{conn | request: :foo}
   end
 end
@@ -33,4 +31,8 @@ end
 
 defmodule ChainBuilderTest do
   use ExUnit.Case
+
+  test "Simple chain" do
+    assert %Agala.Conn{request: :foo} == Foo.call(%Agala.Conn{}, [])
+  end
 end
