@@ -17,7 +17,7 @@ defmodule Agala.Bot do
   use Supervisor
 
   defp via_tuple(name) do
-    {:global, {:bot, name}}
+    {:global, {:agala, :bot, name}}
   end
 
   @doc """

@@ -7,7 +7,7 @@ defmodule Agala.Bot.Handler do
   """
 
   defp via_tuple(name) do
-    {:global, {:handler, name}}
+    {:global, {:agala, :handler, name}}
   end
 
   @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start

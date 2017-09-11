@@ -9,7 +9,7 @@ defmodule Agala.Bot.Responser do
 
 
   defp via_tuple(name) do
-    {:global, {:responser, name}}
+    {:global, {:agala, :responser, name}}
   end
 
   defmacro __using__(_) do

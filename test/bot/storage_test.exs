@@ -10,7 +10,7 @@ defmodule Agala.Bot.StorageTest do
   end
 
   test "Storage is initialized" do
-    assert is_pid(:global.whereis_name({:storage, "test"}))
+    assert is_pid(:global.whereis_name({:agala, :storage, "test"}))
   end
 
   test "Set and Get are working proper", %{bot_params: bot_params} do

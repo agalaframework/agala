@@ -22,7 +22,7 @@ defmodule Agala.ConnTest do
       assert %Agala.BotParams{} = Access.get(conn, :request_bot_params)
       assert nil == Access.get(conn, :foo)
 
-      assert {false, %{halted: true}} = Access.get_and_update(conn, :halted, fn val -> {false, true} end)
+      assert {false, %{halted: true}} = Access.get_and_update(conn, :halted, fn _ -> {false, true} end)
 
       assert {false, %{halted: false}} = Access.pop(conn, :halted)
     end

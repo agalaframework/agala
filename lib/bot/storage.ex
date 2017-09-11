@@ -1,7 +1,7 @@
 defmodule Agala.Bot.Storage do
 
   defp via_tuple(name) do
-    {:global, {:storage, name}}
+    {:global, {:agala, :storage, name}}
   end
 
   @spec start_link(bot_params :: Agala.BotParams.t) :: Agent.on_start
