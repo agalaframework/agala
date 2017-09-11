@@ -1,4 +1,4 @@
-# Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://travis-ci.org/agalaframework/agala.svg?branch=develop)](https://travis-ci.org/agalaframework/agala) [![Deps Status](https://beta.hexfaktor.org/badge/all/github/Virviil/agala.svg?branch=develop)](https://beta.hexfaktor.org/github/Virviil/agala) [![Coverage](http://inch-ci.org/github/virviil/agala.svg)](http://inch-ci.org/github/virviil/agala)
+# Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://travis-ci.org/agalaframework/agala.svg?branch=develop)](https://travis-ci.org/agalaframework/agala) [![Deps Status](https://beta.hexfaktor.org/badge/all/github/Virviil/agala.svg?branch=develop)](https://beta.hexfaktor.org/github/Virviil/agala) [![Docs Status](http://inch-ci.org/github/virviil/agala.svg)](http://inch-ci.org/github/virviil/agala) [![Coverage Status](https://coveralls.io/repos/github/agalaframework/agala/badge.svg?branch=develop)](https://coveralls.io/github/agalaframework/agala?branch=develop)
 
 Full-featured Messaging bot framework.
 
