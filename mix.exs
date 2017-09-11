@@ -17,8 +17,7 @@ defmodule Agala.Mixfile do
 
   def application do
     [
-      applications: [:logger],
-      mod: {Agala, []}
+      extra_applications: [:logger]
     ]
   end
 
