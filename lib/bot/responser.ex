@@ -18,7 +18,7 @@ defmodule Agala.Bot.Responser do
       require Logger
 
       defp via_tuple(name) do
-        {:via, Registry, {Agala.Registry, {:responser, name}}}
+        {:global, {:agala, :responser, name}}
       end
 
       @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start
