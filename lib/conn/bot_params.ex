@@ -29,6 +29,7 @@ defmodule Agala.BotParams do
     name: String.t | atom,
     provider: atom,
     handler: atom,
+    fallback: atom,
     provider_params: Map.t
   }
   defstruct [
@@ -36,6 +37,7 @@ defmodule Agala.BotParams do
     name: nil,
     provider: nil,
     handler: nil,
+    fallback: nil,
     provider_params: %{}
   ]
 
