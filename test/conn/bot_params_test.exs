@@ -1,8 +1,6 @@
 defmodule Agala.BotParamsTest do
   use ExUnit.Case
 
-  alias Agala.BotParams
-
   setup do
     %{bot_params: %Agala.BotParams{
       private: %{},
