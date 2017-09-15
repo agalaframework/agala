@@ -15,11 +15,12 @@ defmodule Agala.Conn do
   """
 
   defstruct [
-    :request,
-    :response,
-    :halted,
-    :request_bot_params,
-    :responser_name
+    request: nil,
+    response: nil,
+    halted: false,
+    request_bot_params: %Agala.BotParams{},
+    responser_name: nil,
+    multi: nil
   ]
 
   @type t :: %Agala.Conn{
@@ -27,7 +28,8 @@ defmodule Agala.Conn do
     response: Map.t,
     halted: boolean,
     request_bot_params: Agala.BotParams.t,
-    responser_name: String.t | Atom
+    responser_name: String.t | Atom,
+    multi: Agala.Conn.Multi.t
   }
 
   @behaviour Access

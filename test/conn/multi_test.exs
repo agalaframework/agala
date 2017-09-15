@@ -25,8 +25,8 @@ defmodule Agala.Conn.MultiTest do
   end
 
   test "test good multi" do
-    assert %Agala.Conn.Multi{} = Agala.Conn.MultiTest.good_multi()
-    assert %Agala.Conn.Multi{} = Agala.Conn.MultiTest.still_good_multi()
+    assert %Agala.Conn{multi: %Agala.Conn.Multi{}} = Agala.Conn.MultiTest.good_multi()
+    assert %Agala.Conn{multi: %Agala.Conn.Multi{}} = Agala.Conn.MultiTest.still_good_multi()
   end
 
   test "test wrong" do

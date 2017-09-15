@@ -48,11 +48,11 @@ defmodule Agala.Bot.Responser do
   end
 
   @doc """
-  This method can be used to send `Agala.Conn` or `Agala.Conn.Multi`,
+  This method can be used to send `Agala.Conn`,
   prepared by `Agala.Chain`, to appropriate provider responer,
   which implements `Agala.Reponser` behaviour.
   """
-  def response(%Agala.Conn.Multi{conns: conns}) do
+  def response(%Agala.Conn{multi: %Agala.Conn.Multi{conns: conns}}) do
     Enum.each(conns, &response/1)
   end
   def response(%Agala.Conn{responser_name: nil}) do

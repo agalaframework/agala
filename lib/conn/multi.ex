@@ -16,7 +16,7 @@ defmodule Agala.Conn.Multi do
   def put_buffer(buff, content), do: Agent.update(buff, &[content | &1])
 
   def render(buff) do
-    %Agala.Conn.Multi{conns: Agent.get(buff, &(&1)) } #TODO
+    %Agala.Conn{multi: %Agala.Conn.Multi{conns: Agent.get(buff, &(&1))}}
   end
 
   defmacro add(conn_structure) do
