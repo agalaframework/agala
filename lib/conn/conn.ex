@@ -14,7 +14,13 @@ defmodule Agala.Conn do
     on provider type.
   """
 
-  defstruct [:request, :response, :halted, :request_bot_params, :responser_name]
+  defstruct [
+    :request,
+    :response,
+    :halted,
+    :request_bot_params,
+    :responser_name
+  ]
 
   @type t :: %Agala.Conn{
     request: Map.t,
