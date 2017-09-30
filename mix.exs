@@ -3,21 +3,21 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "2.0.0-rc1",
+     version: "2.0.0-rc2",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
      package: package(),
      aliases: aliases(),
+     test_coverage: [tool: Coverex.Task, coveralls: true],
      docs: docs(),
      deps: deps()]
   end
 
   def application do
     [
-      applications: [:logger],
-      mod: {Agala, []}
+      extra_applications: [:logger]
     ]
   end
 
@@ -31,7 +31,8 @@ defmodule Agala.Mixfile do
     [
       {:ex_doc, "~> 0.16", only: :dev},
       {:inch_ex,"~> 0.5", only: :docs},
-      {:credo, "~> 0.8", only: [:dev, :test]}
+      {:credo, "~> 0.8", only: [:dev, :test]},
+      {:coverex, "~> 1.4.15", only: :test}
     ]
   end
 

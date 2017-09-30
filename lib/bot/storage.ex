@@ -1,7 +1,7 @@
-defmodule Agala.Bot.LetItCrash do
+defmodule Agala.Bot.Storage do
 
   defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:let_it_crash, name}}}
+    {:global, {:agala, :storage, name}}
   end
 
   @spec start_link(bot_params :: Agala.BotParams.t) :: Agent.on_start

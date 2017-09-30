@@ -1,6 +1,8 @@
 defmodule Agala.Chain.Loopback do
   @moduledoc """
   Loopback automaticly sends response back to the bot, which got the request
+  You can use this Chain in pipeline in order to simplify resolving name of
+  the bot, that should response with your connections.
   """
   import Agala.Conn
 

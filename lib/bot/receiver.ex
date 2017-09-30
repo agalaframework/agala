@@ -10,7 +10,7 @@ defmodule Agala.Bot.Receiver do
       @behaviour Agala.Bot.Receiver
 
       defp via_tuple(name) do
-        {:via, Registry, {Agala.Registry, {:receiver, name}}}
+        {:global, {:agala, :receiver, name}}
       end
 
       @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start

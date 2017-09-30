@@ -17,7 +17,7 @@ defmodule Agala.Bot do
   use Supervisor
 
   defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:bot, name}}}
+    {:global, {:agala, :bot, name}}
   end
 
   @doc """
@@ -29,7 +29,7 @@ defmodule Agala.Bot do
 
   def init(bot_params) do
     children = [
-      worker(Agala.Bot.LetItCrash, [bot_params]),
+      worker(Agala.Bot.Storage, [bot_params]),
       worker(bot_params.provider.get_receiver(), [bot_params]),
       worker(Agala.Bot.Handler, [bot_params]),
       worker(bot_params.provider.get_responser(), [bot_params]),

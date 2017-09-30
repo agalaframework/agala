@@ -1,13 +1,15 @@
 defmodule Agala.Bot.Responser do
   require Logger
-  @callback response(conn :: Agala.Conn.t, Agala.BotParams.t) :: any
   @moduledoc """
   Behaviour, represents the bank which gets Agala.Conn from Chain
   and then syncronosly proceeds them to response
   """
 
+  @callback response(conn :: Agala.Conn.t, bot_params :: Agala.BotParams.t) :: any
+
+
   defp via_tuple(name) do
-    {:via, Registry, {Agala.Registry, {:responser, name}}}
+    {:global, {:agala, :responser, name}}
   end
 
   defmacro __using__(_) do
@@ -16,7 +18,7 @@ defmodule Agala.Bot.Responser do
       require Logger
 
       defp via_tuple(name) do
-        {:via, Registry, {Agala.Registry, {:responser, name}}}
+        {:global, {:agala, :responser, name}}
       end
 
       @spec start_link(bot_params :: Agala.BotParams.t) :: GenServer.on_start
@@ -34,13 +36,25 @@ defmodule Agala.Bot.Responser do
 
       @spec handle_cast({:send_conn, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
       def handle_cast({:response, conn}, bot_params = %Agala.BotParams{}) do
-        bot_params.provider.get_responser().response(conn, bot_params)
+        response = bot_params.provider.get_responser().response(conn, bot_params)
+        case bot_params.fallback do
+          nil -> {:noreply, bot_params}
+          module -> module.handle_fallback(conn |> Map.put(:fallback, response))
+        end
         {:noreply, bot_params}
       end
       def handle_cast(_, state), do: {:noreply, state}
     end
   end
 
+  @doc """
+  This method can be used to send `Agala.Conn`,
+  prepared by `Agala.Chain`, to appropriate provider responer,
+  which implements `Agala.Reponser` behaviour.
+  """
+  def response(%Agala.Conn{multi: %Agala.Conn.Multi{conns: conns}}) do
+    Enum.each(conns, &response/1)
+  end
   def response(%Agala.Conn{responser_name: nil}) do
     Logger.warn("Responser's name was not specified for the connection. Please, check your chain.")
   end

@@ -14,14 +14,22 @@ defmodule Agala.Conn do
     on provider type.
   """
 
-  defstruct [:request, :response, :halted, :request_bot_params, :responser_name]
+  defstruct [
+    request: nil,
+    response: nil,
+    halted: false,
+    request_bot_params: %Agala.BotParams{},
+    responser_name: nil,
+    multi: nil
+  ]
 
   @type t :: %Agala.Conn{
     request: Map.t,
     response: Map.t,
     halted: boolean,
     request_bot_params: Agala.BotParams.t,
-    responser_name: String.t | Atom
+    responser_name: String.t | Atom,
+    multi: Agala.Conn.Multi.t
   }
 
   @behaviour Access
@@ -48,13 +56,17 @@ defmodule Agala.Conn do
   @doc """
   Halts the Agala.Chain pipeline by preventing further plugs downstream from being
   invoked. See the docs for `Agala.Chain.Builder` for more information on halting a
-  plug pipeline.
+  Chain pipeline.
   """
   @spec halt(t) :: t
   def halt(%Agala.Conn{} = conn) do
     %{conn | halted: true}
   end
 
+  @doc """
+  Specifies the name for the bot, which will send the response back
+  to side APIs.
+  """
   def send_to(%Agala.Conn{} = conn, name) do
     conn
     |> Map.put(:responser_name, name)
