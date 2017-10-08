@@ -1,5 +1,4 @@
-defmodule Agala.Bot.Storage do
-
+defmodule Agala.Storage.Local do
   defp via_tuple(name) do
     {:global, {:agala, :storage, name}}
   end

@@ -1,7 +1,8 @@
 defmodule Agala.Bot.StorageTest do
   use ExUnit.Case
 
-  alias Agala.{Bot.Storage, BotParams}
+  alias Agala.Storage.Local, as: Storage
+  alias Agala.BotParams
 
   setup do
     bot_params = %BotParams{name: "test"}
@@ -14,17 +15,17 @@ defmodule Agala.Bot.StorageTest do
   end
 
   test "Set and Get are working proper", %{bot_params: bot_params} do
-    Agala.Bot.Storage.set(bot_params, :foo, "foo")
-    assert "foo" = Agala.Bot.Storage.get(bot_params, :foo)
+    Storage.set(bot_params, :foo, "foo")
+    assert "foo" = Storage.get(bot_params, :foo)
 
-    Agala.Bot.Storage.set(bot_params, :bar, "bar")
-    assert "foo" = Agala.Bot.Storage.get(bot_params, :foo)
-    assert "bar" = Agala.Bot.Storage.get(bot_params, :bar)
+    Storage.set(bot_params, :bar, "bar")
+    assert "foo" = Storage.get(bot_params, :foo)
+    assert "bar" = Storage.get(bot_params, :bar)
 
-    Agala.Bot.Storage.set(bot_params, :foo, "bar")
-    assert "bar" = Agala.Bot.Storage.get(bot_params, :foo)
-    assert "bar" = Agala.Bot.Storage.get(bot_params, :bar)
+    Storage.set(bot_params, :foo, "bar")
+    assert "bar" = Storage.get(bot_params, :foo)
+    assert "bar" = Storage.get(bot_params, :bar)
 
-    assert nil == Agala.Bot.Storage.get(bot_params, :foobar)
+    assert nil == Storage.get(bot_params, :foobar)
   end
 end

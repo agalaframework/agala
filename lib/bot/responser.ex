@@ -37,9 +37,9 @@ defmodule Agala.Bot.Responser do
       @spec handle_cast({:send_conn, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
       def handle_cast({:response, conn}, bot_params = %Agala.BotParams{}) do
         response = bot_params.provider.get_responser().response(conn, bot_params)
-        case bot_params.fallback do
-          nil -> {:noreply, bot_params}
-          module -> module.handle_fallback(conn |> Map.put(:fallback, response))
+        case conn.fallback do
+          lambda when is_function(lambda) -> lambda.(Map.put(conn, :fallback, response))
+          _ -> :ok
         end
         {:noreply, bot_params}
       end

@@ -23,14 +23,14 @@ defmodule Agala do
   Can be usefull to store some state across restarting handlers, responsers
   and receivers.
   """
-  defdelegate set(bot_params, key, value), to: Agala.Bot.Storage
+  defdelegate set(bot_params, key, value), to: Agala.Storage.Local
 
   @doc """
   Gets the value, stored under the given `key` across bot's supervisor lifetime.
   Can be usefull to reveal some state across restarting handlers, responsers
   and receivers.
   """
-  defdelegate get(bot_params, key), to: Agala.Bot.Storage
+  defdelegate get(bot_params, key), to: Agala.Storage.Local
 
   @doc """
   This method provides functionality to send request and get response
