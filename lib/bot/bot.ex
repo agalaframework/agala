@@ -29,7 +29,7 @@ defmodule Agala.Bot do
 
   def init(bot_params) do
     children = [
-      worker(Agala.Bot.Storage, [bot_params]),
+      worker(Agala.Storage.Local, [bot_params]),
       worker(bot_params.provider.get_receiver(), [bot_params]),
       worker(Agala.Bot.Handler, [bot_params]),
       worker(bot_params.provider.get_responser(), [bot_params]),
