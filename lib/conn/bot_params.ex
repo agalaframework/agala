@@ -29,14 +29,16 @@ defmodule Agala.BotParams do
     name: String.t | atom,
     provider: atom,
     handler: atom,
-    provider_params: Map.t
+    provider_params: Map.t,
+    storage: atom,
   }
   defstruct [
     private: %{},
     name: nil,
     provider: nil,
     handler: nil,
-    provider_params: %{}
+    provider_params: %{},
+    storage: Agala.Storage.Local
   ]
 
   @behaviour Access

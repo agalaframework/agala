@@ -1,4 +1,18 @@
 defmodule Agala.Storage.Local do
+  @moduledoc """
+  Basic `Agala.Storage` implimentation. The data is stored in `Agent`, that is started
+  under `Agala.Bot` supervisor tree.
+  """
+  @behaviour Agala.Storage
+
+  def child_spec(bot_params = %{name: name}) do
+    %{
+      id: "Agala.Storage.Local##{name}",
+      start: {Agala.Storage.Local, :start_link, [bot_params]},
+      type: :worker
+    }
+  end
+
   defp via_tuple(name) do
     {:global, {:agala, :storage, name}}
   end
@@ -17,6 +31,7 @@ defmodule Agala.Storage.Local do
     }
   end
 
+  @spec get(bot_params :: Agala.BotParams.t, key :: Map.key) :: any
   def get(bot_params, key) do
     Agent.get(via_tuple(bot_params.name), fn map -> Map.get(map, key) end)
   end
