@@ -34,7 +34,7 @@ defmodule Agala.Mixfile do
   defp deps do
     [
       {:ex_doc, "~> 0.16", only: :dev},
-      {:inch_ex,"~> 0.5", only: :docs},
+      {:inch_ex,"~> 0.5", only: [:dev, :test, :docs]},
       {:credo, "~> 0.8", only: [:dev, :test]},
       {:coverex, "~> 1.4.15", only: :test}
     ]

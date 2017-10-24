@@ -3,7 +3,7 @@ defmodule Agala.Bot.Storage.Local do
   Basic `Agala.Storage` implimentation. The data is stored in `Agent`, that is started
   under `Agala.Bot` supervisor tree.
   """
-  @behaviour Agala.Storage
+  @behaviour Agala.Bot.Storage
 
   def child_spec(bot_params = %{name: name}) do
     %{
