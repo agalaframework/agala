@@ -1,5 +1,6 @@
 defmodule Agala.Bot.Receiver do
-  @callback get_updates(notify_with :: fun, bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
+  @type message :: any
+  @callback get_updates(notify_with :: (message -> :ok), bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
   @moduledoc """
   TODO
   """
@@ -33,7 +34,7 @@ defmodule Agala.Bot.Receiver do
           Agala.Bot.Handler.handle(message, bot_params)
         end
         new_params = get_updates(notify_with, bot_params)
-        case get_in(new_params, ([:private, :restart])) do
+        case get_in(new_params, ([:common, :restart])) do
           true -> {:stop, :normal, new_params}
           _ -> {:noreply, new_params}
         end

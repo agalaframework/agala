@@ -1,4 +1,4 @@
-defmodule Agala.Storage do
+defmodule Agala.Bot.Storage do
   @moduledoc """
   Behavior for modules that represent permanent storage system for Agala bot.
 

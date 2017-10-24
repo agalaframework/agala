@@ -1,7 +1,7 @@
 defmodule Agala.Bot.StorageTest do
   use ExUnit.Case
 
-  alias Agala.Storage.Local, as: Storage
+  alias Agala.Bot.Storage.Local, as: Storage
   alias Agala.BotParams
 
   setup do

@@ -1,4 +1,4 @@
-defmodule Agala.Storage.Local do
+defmodule Agala.Bot.Storage.Local do
   @moduledoc """
   Basic `Agala.Storage` implimentation. The data is stored in `Agent`, that is started
   under `Agala.Bot` supervisor tree.

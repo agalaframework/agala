@@ -8,12 +8,16 @@ defmodule Agala.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
+     elixirc_paths: elixirc_paths(Mix.env),
      package: package(),
      aliases: aliases(),
      test_coverage: [tool: Coverex.Task, coveralls: true],
      docs: docs(),
      deps: deps()]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   def application do
     [

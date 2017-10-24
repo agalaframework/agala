@@ -19,19 +19,13 @@ defmodule Agala.Bot do
   def child_spec(bot_params = %{name: name}) do
     %{
       id: "Agala.Bot##{name}",
-      start: {Agala.Bot, :start_watchdog, [bot_params]},
+      start: {Agala.Bot, :start_link, [bot_params]},
       type: :supervisor
     }
   end
 
   defp via_tuple(name) do
     {:global, {:agala, :bot, name}}
-  end
-
-  def start_watchdog(bot_params) do
-    Agala.Cluster.Supervisor.start_link(bot_params)
-
-    Agala.Cluster.Supervisor.start_child(Agala.Bot, bot_params)
   end
 
   @doc """
@@ -45,8 +39,8 @@ defmodule Agala.Bot do
     storage: storage,
     provider: provider
   }) do
-    case function_exported?(storage, :start_link, 1) do
-      true -> [{storage, }]
+    case function_exported?(storage, :child_spec, 1) do
+      true -> [{storage, bot_params}]
       false -> []
     end ++ [
       {provider.get_receiver(), bot_params},
@@ -54,13 +48,5 @@ defmodule Agala.Bot do
       {provider.get_responser(), bot_params},
     ]
     |> Supervisor.init(strategy: :one_for_one, max_restarts: 1000, max_seconds: 1)
-    # children = [
-    #   worker(Agala.Storage.Local, [bot_params]),
-    #   worker(bot_params.provider.get_receiver(), [bot_params]),
-    #   worker(Agala.Bot.Handler, [bot_params]),
-    #   worker(bot_params.provider.get_responser(), [bot_params]),
-    # ]
-
-    # supervise(children, strategy: :one_for_one, max_restarts: 1000, max_seconds: 1)
   end
 end
