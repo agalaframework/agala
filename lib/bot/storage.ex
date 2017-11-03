@@ -11,7 +11,7 @@ defmodule Agala.Bot.Storage do
   Of cource, developer should implement his own storage for business logic, but
   `providers` can use this storage to save internal data.
 
-  ### Implimentation
+  ### Implementation
 
   Each `Agala.Storage` should mandatory implement two methods: `set/3` and `get/2`.
   This methods are used to keep and retrieve data.

@@ -43,9 +43,9 @@ defmodule Agala.Bot do
       true -> [{storage, bot_params}]
       false -> []
     end ++ [
-      {provider.get_receiver(), bot_params},
-      {Agala.Bot.Handler, bot_params},
       {provider.get_responser(), bot_params},
+      {Agala.Bot.Handler, bot_params},
+      {provider.get_receiver(), bot_params},
     ]
     |> Supervisor.init(strategy: :one_for_one, max_restarts: 1000, max_seconds: 1)
   end
