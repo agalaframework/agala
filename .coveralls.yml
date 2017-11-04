@@ -1,4 +1,2 @@
 service_name: travis-pro
 repo_token: CvCN1gPJGSxQI9W7iygQmp4EB7OaxTQBO
-skip_files:
-- test

@@ -4,7 +4,9 @@ elixir:
   - 1.5.2
 otp_release:
   - 20.1
+env:
+  - MIX_ENV=test
+script: mix coveralls.travis --pro
 after_script:
   - mix deps.get --only docs
   - MIX_ENV=docs mix inch.report
-  - mix test --cover
