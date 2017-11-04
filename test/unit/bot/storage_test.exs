@@ -1,4 +1,4 @@
-defmodule Agala.Bot.StorageTest do
+defmodule Agala.Bot.BotTest do
   use ExUnit.Case
 
   alias Agala.Bot.Storage.Local, as: Storage
@@ -12,6 +12,10 @@ defmodule Agala.Bot.StorageTest do
 
   test "Storage is initialized" do
     assert is_pid(:global.whereis_name({:agala, :storage, "test"}))
+  end
+
+  test "Storage child-spec is proper", %{bot_params: bot_params} do
+    assert %{id: "Agala.Storage.Local#test", type: :worker} = Storage.child_spec(bot_params)
   end
 
   test "Set and Get are working proper", %{bot_params: bot_params} do
