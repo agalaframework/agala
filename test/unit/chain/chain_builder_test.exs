@@ -1,4 +1,4 @@
-defmodule Foo do
+defmodule FooGood do
   import Agala.Conn
 
   def init(opts), do: opts
@@ -8,12 +8,22 @@ defmodule Foo do
   end
 end
 
+defmodule FooBad do
+  import Agala.Conn
+
+  def init(opts), do: opts
+
+  def call_bad(conn, _opts) do
+    %{conn | request: :foo}
+  end
+end
+
 defmodule Bar do
   use Agala.Chain.Builder
 
   chain :bar
   chain :foobar
-  chain Foo
+  chain FooGood
 
   def bar(conn, _opts) do
     IO.inspect "Calling BAR"
@@ -33,6 +43,16 @@ defmodule ChainBuilderTest do
   use ExUnit.Case
 
   test "Simple chain" do
-    assert %Agala.Conn{request: :foo} == Foo.call(%Agala.Conn{}, [])
+    assert %Agala.Conn{request: :foo} == FooGood.call(%Agala.Conn{}, [])
+  end
+
+  test "Compiletime fail" do
+    assert_raise(ArgumentError, fn ->
+      defmodule BarBad do
+        use Agala.Chain.Builder
+
+        chain FooBad
+      end
+    end)
   end
 end
