@@ -5,6 +5,7 @@ defmodule Agala.Bot.Storage.Local do
   """
   @behaviour Agala.Bot.Storage
 
+  @doc false
   def child_spec(bot_params = %{name: name}) do
     %{
       id: "Agala.Storage.Local##{name}",
@@ -17,6 +18,7 @@ defmodule Agala.Bot.Storage.Local do
     {:global, {:agala, :storage, name}}
   end
 
+  @doc false
   @spec start_link(bot_params :: Agala.BotParams.t) :: Agent.on_start
   def start_link(bot_params) do
     Agent.start_link(&Map.new/0, name: via_tuple(bot_params.name))

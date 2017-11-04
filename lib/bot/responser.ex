@@ -7,7 +7,6 @@ defmodule Agala.Bot.Responser do
 
   @callback response(conn :: Agala.Conn.t, bot_params :: Agala.BotParams.t) :: any
 
-
   defp via_tuple(name) do
     {:global, {:agala, :responser, name}}
   end

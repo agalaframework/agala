@@ -40,10 +40,12 @@ defmodule Agala.Chain.Builder do
   @doc """
   A macro that stores a new chain. `opts` will be passed unchanged to the new
   chain.
+
   This macro doesn't add any guards when adding the new chain to the pipeline;
   for more information about adding chains with guards see `compile/1`.
+
   ## Examples
-      chain Agala.Chain.Logger               # chain module
+      chain Agala.Chain.Logger        # chain module
       chain :foo, some_options: true  # chain function
   """
   defmacro chain(chain, opts \\ []) do
@@ -54,13 +56,19 @@ defmodule Agala.Chain.Builder do
 
   @doc """
   Compiles a chain pipeline.
+
   Each element of the chain pipeline (according to the type signature of this
   function) has the form:
-      {chain_name, options, guards}
+  ```
+  {chain_name, options, guards}
+  ```
+
   Note that this function expects a reversed pipeline (with the last chain that
   has to be called coming first in the pipeline).
+
   The function returns a tuple with the first element being a quoted reference
   to the connection and the second element being the compiled quoted pipeline.
+
   ## Examples
       Agala.Chain.Builder.compile(env, [
         {Agala.Chain.Logger, [], true}, # no guards, as added by the Agala.Chain.Builder.chain/2 macro

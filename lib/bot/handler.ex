@@ -35,10 +35,14 @@ defmodule Agala.Bot.Handler do
 
   @doc """
   This method is called in order to pass messages from responser to handler.
+
   This method is asyncronous, so you will not be blocked when calling it.
   All incoming messages will be put in handler's message box and the will be proceeded
   one by one.
   This method will wrap message in `Agala.Conn` struct, and then proceed it with `Agala.Chain`
+
+  You probably should not use this method in **bot** developing, but you can understand how
+  the flow is working if you need to create your own provider.
 
   """
   @spec handle(message :: any, bot_params :: Agala.BotParams.t) :: :ok
@@ -62,5 +66,6 @@ defmodule Agala.Bot.Handler do
     |> Agala.response_with
     {:noreply, bot_params}
   end
+  @doc false
   def handle_cast(message, state), do: super(message, state)
 end

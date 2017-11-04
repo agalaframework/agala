@@ -1,9 +1,34 @@
 defmodule Agala.Bot.Receiver do
   @type message :: any
-  @callback get_updates(notify_with :: (message -> :ok), bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
   @moduledoc """
-  TODO
+  You can use this behaviour for implementing your own **provider**.
+
+  This receiver has simple generic idea:
+
+  * In loop, it's geting new messages via `get_updates/2` callback
+  * Then, these messages are sent into handler one after one.
+
+  So, you actually can `use Agala.Bot.Receiver`, and implement only one method -
+  `get_updates/2`, which will get new messages.
+
+  This callback will be called by framework itself, but in order to push messages into `Agala.Bot.Handler`
+  you should call `notify_with/1` lambda, that will come as first argument to your `get_updates/2` function.
+
+  ### Example
+      # Simple random numbers generator
+      defmodule Random.Receiver do
+        use Agala.Bot.Receiver
+
+        def get_updates(notify_with, _bot_params) do
+          notify_with(:rand.uniform)
+        end
+      end
   """
+
+  @doc """
+  TODO: Docs
+  """
+  @callback get_updates(notify_with :: (message -> :ok), bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
   defmacro __using__(_) do
     quote location: :keep do
       use GenServer
