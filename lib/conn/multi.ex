@@ -7,7 +7,7 @@ defmodule Agala.Conn.Multi do
 
   Sometimes you need to perform several actions inside one `batch`.
   For example send multiple messages, or delete previous message and send new one.
-  You can do this inside handler inside handling one `Agala.Conn`
+  You can do this inside handler inside handling one `Agala.Conn`.
   """
   defstruct [conns: []]
 

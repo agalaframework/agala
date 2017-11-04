@@ -8,7 +8,7 @@ All nessesary information, including tutorials, examples, guides and API documen
 
 ## Installation via Hex
 
-The package is [available in Hex](https://hex.pm/packages/agala), and can be installed as:
+The package is [available in Hex](lttps://hex.pm/packages/agala), and can be installed as:
 
   1. Add `agala` to your list of dependencies in `mix.exs`:
 

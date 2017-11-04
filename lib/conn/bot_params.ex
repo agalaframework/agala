@@ -23,8 +23,10 @@ defmodule Agala.BotParams do
     precalculated by the internal processes of initiation for your provider, or to cache
     some data. In common situations you should not use it at all, until you are developing
     your own `provider`.
+  * `common` - almost the same as private params, but they are the same
+    across all possible providers. Read about them in the section below.
 
-  ### Common params.
+  #### Common params.
 
   Common params works the same as private params - store information for providers. But,
   they are **common** for each and every provider, and can touch not only `Agala.Provider`
@@ -33,6 +35,10 @@ defmodule Agala.BotParams do
 
   * `restart: true` will force `Agala.Bot.Receiver` process to restart in next cycle.
 
+  """
+
+  @typedoc """
+  Type, representing `Agala.BotParams` struct.
   """
   @type t :: %Agala.BotParams{
     private: %{},
@@ -43,6 +49,7 @@ defmodule Agala.BotParams do
     provider_params: Map.t,
     storage: atom,
   }
+
   defstruct [
     private: %{},
     common: %{},
