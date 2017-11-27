@@ -9,7 +9,7 @@ defmodule Agala.Bot.Storage.Local do
   def child_spec(bot_params = %{name: name}) do
     %{
       id: "Agala.Storage.Local##{name}",
-      start: {Agala.Storage.Local, :start_link, [bot_params]},
+      start: {__MODULE__, :start_link, [bot_params]},
       type: :worker
     }
   end
