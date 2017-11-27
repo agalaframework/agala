@@ -56,6 +56,7 @@ defmodule Agala.Bot do
     provider: provider
   }) do
     Process.register(self(), :"#Agala.Bot<#{bot_params.name}>")
+    Code.ensure_loaded(storage)
     case function_exported?(storage, :child_spec, 1) do
       true -> [{storage, bot_params}]
       false -> []
