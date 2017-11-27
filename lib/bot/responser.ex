@@ -7,7 +7,6 @@ defmodule Agala.Bot.Responser do
 
   @callback response(conn :: Agala.Conn.t, bot_params :: Agala.BotParams.t) :: any
 
-
   defp via_tuple(name) do
     {:global, {:agala, :responser, name}}
   end
@@ -28,6 +27,7 @@ defmodule Agala.Bot.Responser do
 
       @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
       def init(bot_params) do
+        Process.register(self(), :"#Agala.Bot.Responser<#{bot_params.name}>")
         Logger.debug("Starting responser with params:\n\t#{inspect bot_params}\r")
         bot_params.provider.init(bot_params, :responser)
       end
@@ -37,9 +37,9 @@ defmodule Agala.Bot.Responser do
       @spec handle_cast({:send_conn, conn :: Agala.Conn.t}, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
       def handle_cast({:response, conn}, bot_params = %Agala.BotParams{}) do
         response = bot_params.provider.get_responser().response(conn, bot_params)
-        case bot_params.fallback do
-          nil -> {:noreply, bot_params}
-          module -> module.handle_fallback(conn |> Map.put(:fallback, response))
+        case conn.fallback do
+          lambda when is_function(lambda) -> lambda.(Map.put(conn, :fallback, response))
+          _ -> :ok
         end
         {:noreply, bot_params}
       end

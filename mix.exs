@@ -3,17 +3,22 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "2.0.0-rc2",
-     elixir: "~> 1.4",
+     version: "2.0.0",
+     elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
+     elixirc_paths: elixirc_paths(Mix.env),
      package: package(),
      aliases: aliases(),
-     test_coverage: [tool: Coverex.Task, coveralls: true],
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
      docs: docs(),
      deps: deps()]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   def application do
     [
@@ -30,9 +35,9 @@ defmodule Agala.Mixfile do
   defp deps do
     [
       {:ex_doc, "~> 0.16", only: :dev},
-      {:inch_ex,"~> 0.5", only: :docs},
+      {:inch_ex,"~> 0.5", only: [:dev, :test, :docs]},
       {:credo, "~> 0.8", only: [:dev, :test]},
-      {:coverex, "~> 1.4.15", only: :test}
+      {:excoveralls, "~> 0.7.4"}
     ]
   end
 

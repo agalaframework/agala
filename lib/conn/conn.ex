@@ -20,7 +20,8 @@ defmodule Agala.Conn do
     halted: false,
     request_bot_params: %Agala.BotParams{},
     responser_name: nil,
-    multi: nil
+    multi: nil,
+    fallback: nil
   ]
 
   @type t :: %Agala.Conn{
@@ -29,7 +30,8 @@ defmodule Agala.Conn do
     halted: boolean,
     request_bot_params: Agala.BotParams.t,
     responser_name: String.t | Atom,
-    multi: Agala.Conn.Multi.t
+    multi: Agala.Conn.Multi.t,
+    fallback: function | Map.t
   }
 
   @behaviour Access
@@ -54,7 +56,7 @@ defmodule Agala.Conn do
   end
 
   @doc """
-  Halts the Agala.Chain pipeline by preventing further plugs downstream from being
+  Halts the Agala.Chain pipeline by preventing further chains downstream from being
   invoked. See the docs for `Agala.Chain.Builder` for more information on halting a
   Chain pipeline.
   """
@@ -70,5 +72,17 @@ defmodule Agala.Conn do
   def send_to(%Agala.Conn{} = conn, name) do
     conn
     |> Map.put(:responser_name, name)
+  end
+
+  @doc """
+  Specifies the lambda function that will be called after the result of
+  provider's respponse to the bot's response will appear.
+  The lambda shuld have only one parameter - `Agala.Conn.t` for current connection.
+  It'll have `request` with request to bot, `response` with response from bot, and
+  `fallback` with response sending results.
+  """
+  def with_fallback(%Agala.Conn{} = conn, fallback_callback) do
+    conn
+    |> Map.put(:fallback, fallback_callback)
   end
 end

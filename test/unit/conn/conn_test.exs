@@ -34,5 +34,13 @@ defmodule Agala.ConnTest do
     test ": send_to is working properly", %{conn: conn} do
       assert %{responser_name: "foo"} = Conn.send_to(conn, "foo")
     end
+
+    test ": with_fallback is working properly", %{conn: conn} do
+      fun = fn conn -> conn.responser_name end
+
+      %{fallback: fun_from_conn} = Conn.with_fallback(conn, fun)
+
+      assert "test" = fun_from_conn.(conn)
+    end
   end
 end

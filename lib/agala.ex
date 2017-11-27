@@ -23,20 +23,29 @@ defmodule Agala do
   Can be usefull to store some state across restarting handlers, responsers
   and receivers.
   """
-  defdelegate set(bot_params, key, value), to: Agala.Bot.Storage
+  def set(bot_params, key, value) do
+    bot_params.storage.set(bot_params, key, value)
+  end
 
   @doc """
   Gets the value, stored under the given `key` across bot's supervisor lifetime.
   Can be usefull to reveal some state across restarting handlers, responsers
   and receivers.
   """
-  defdelegate get(bot_params, key), to: Agala.Bot.Storage
+  def get(bot_params, key) do
+    bot_params.storage.get(bot_params, key)
+  end
 
   @doc """
   This method provides functionality to send request and get response
-  to bot responser's provider. You can use it
+  to bot responser's provider. You can use it in order to call method out of request-response
+  cycle. For example - to get additional parameters from provider's entity.
+
+  ### Examples
+
+      Agala.execute(fn conn -> Users.get(conn, user_ids, fields, name_case) end, bot_params)
   """
-  # Agala.execute(fn conn -> Users.get(conn, user_ids, fields, name_case) end, bot_params)
+  @spec execute(fun :: (Agala.Conn.t -> any), bot_params :: Agala.BotParams.t) :: any
   def execute(fun, bot_params) do
     {:ok, bot_params} = bot_params
     |> bot_params.provider.init(:responser)
