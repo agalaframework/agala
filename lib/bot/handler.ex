@@ -27,6 +27,7 @@ defmodule Agala.Bot.Handler do
   @doc false
   @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
   def init(bot_params) do
+    Process.register(self(), :"#Agala.Bot.Handler<#{bot_params.name}>")
     Logger.debug(fn -> "Starting handler with params:\n\t#{inspect bot_params}\r" end)
     {:ok, bot_params}
   end

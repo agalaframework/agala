@@ -21,7 +21,12 @@ defmodule Agala.Bot.Storage.Local do
   @doc false
   @spec start_link(bot_params :: Agala.BotParams.t) :: Agent.on_start
   def start_link(bot_params) do
-    Agent.start_link(&Map.new/0, name: via_tuple(bot_params.name))
+    case Agent.start_link(&Map.new/0, name: via_tuple(bot_params.name)) do
+      {:ok, pid} ->
+        Process.register(pid, :"#Agala.Bot.Storage<#{bot_params.name}>")
+        {:ok, pid}
+      fail -> fail
+    end
   end
 
   @spec set(bot_params :: Agala.BotParams.t, key :: Map.key, value :: Map.value) ::

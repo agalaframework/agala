@@ -57,7 +57,7 @@ defmodule Agala.BotParams do
     provider: nil,
     handler: nil,
     provider_params: %{},
-    storage: Agala.Storage.Local
+    storage: Agala.Bot.Storage.Local
   ]
 
   @behaviour Access
