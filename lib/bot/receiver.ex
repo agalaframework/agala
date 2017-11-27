@@ -46,6 +46,7 @@ defmodule Agala.Bot.Receiver do
 
       @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
       def init(bot_params) do
+        Process.register(self(), :"#Agala.Bot.Receiver<#{bot_params.name}>")
         Logger.debug("Starting receiver with params:\n\t#{inspect bot_params}\r")
         Process.send(self(), :loop, [])
         bot_params.provider.init(bot_params, :receiver)

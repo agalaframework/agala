@@ -27,6 +27,7 @@ defmodule Agala.Bot.Responser do
 
       @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
       def init(bot_params) do
+        Process.register(self(), :"#Agala.Bot.Responser<#{bot_params.name}>")
         Logger.debug("Starting responser with params:\n\t#{inspect bot_params}\r")
         bot_params.provider.init(bot_params, :responser)
       end
