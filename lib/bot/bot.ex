@@ -35,7 +35,7 @@ defmodule Agala.Bot do
   @doc false
   def child_spec(bot_params = %{name: name}) do
     %{
-      id: "Agala.Bot##{name}",
+      id: :"#Agala.Bot<#{name}>",
       start: {Agala.Bot, :start_link, [bot_params]},
       type: :supervisor
     }
