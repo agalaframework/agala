@@ -1,3 +1,7 @@
+### 2.0.2
+
+[BUG] Change Bot's id from string to atom
+
 ### 2.0.0
 
 ### Changes
