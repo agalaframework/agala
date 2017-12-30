@@ -8,6 +8,6 @@ defmodule Agala.Bot.StorageTest do
   end
 
   test "Bot child-spec is proper", %{bot_params: bot_params} do
-    assert %{id: "Agala.Bot#test", type: :supervisor} = Bot.child_spec(bot_params)
+    assert %{id: :"#Agala.Bot<test>", type: :supervisor} = Bot.child_spec(bot_params)
   end
 end
