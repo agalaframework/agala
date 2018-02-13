@@ -32,3 +32,5 @@ erl_crash.dump
 /installer/doc
 /installer/erl_crash.dump
 
+# ElixirLS
+/.elixir_ls

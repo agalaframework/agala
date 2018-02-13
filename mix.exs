@@ -60,7 +60,7 @@ defmodule Agala.Mixfile do
 
   defp package do
     [
-      maintainers: ["Dmitry Rubinstein", "Vladimir Barsukov"],
+      maintainers: ["Dmitry Rubinstein"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/agalaframework/agala"},
       files: ~w(mix.exs README* CHANGELOG* lib)
