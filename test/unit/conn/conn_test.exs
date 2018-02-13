@@ -42,5 +42,17 @@ defmodule Agala.ConnTest do
 
       assert "test" = fun_from_conn.(conn)
     end
+
+    test ": assigns is working properly", %{conn: conn} do
+      assert nil == conn.assigns[:hello]
+      conn = Conn.assign(conn, :hello, "world")
+      assert "world" == conn.assigns[:hello]
+    end
+
+    test ": put_private is working properly", %{conn: conn} do
+      assert nil == conn.private[:hello]
+      conn = Conn.put_private(conn, :hello, "world")
+      assert "world" == conn.private[:hello]
+    end
   end
 end
