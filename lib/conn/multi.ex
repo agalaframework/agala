@@ -29,7 +29,7 @@ defmodule Agala.Conn.Multi do
   def put_buffer(buff, content), do: Agent.update(buff, &[content | &1])
   @doc false
   def render(buff) do
-    %Agala.Conn{multi: %Agala.Conn.Multi{conns: Agent.get(buff, &(&1))}}
+    %Agala.Conn{multi: %Agala.Conn.Multi{conns: Enum.reverse(Agent.get(buff, &(&1)))}}
   end
 
   defmacro add(conn_structure) do

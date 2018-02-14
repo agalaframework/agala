@@ -55,10 +55,10 @@ defmodule Agala.Bot.Responser do
   def response(%Agala.Conn{multi: %Agala.Conn.Multi{conns: conns}}) do
     Enum.each(conns, &response/1)
   end
+  def response(%Agala.Conn{halted: true}), do: :ok
   def response(%Agala.Conn{responser_name: nil}) do
     Logger.warn("Responser's name was not specified for the connection. Please, check your chain.")
   end
-  def response(%Agala.Conn{halted: true}), do: :ok
   def response(conn = %Agala.Conn{responser_name: name}) do
     GenServer.cast(via_tuple(name), {:response, conn})
   end
