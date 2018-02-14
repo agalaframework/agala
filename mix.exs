@@ -3,7 +3,7 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "2.0.2",
+     version: "2.0.4",
      elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -34,10 +34,10 @@ defmodule Agala.Mixfile do
 
   defp deps do
     [
-      {:ex_doc, "~> 0.16", only: :dev},
+      {:ex_doc, "~> 0.18", only: :dev},
       {:inch_ex,"~> 0.5", only: [:dev, :test, :docs]},
       {:credo, "~> 0.8", only: [:dev, :test]},
-      {:excoveralls, "~> 0.7.4"}
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 
