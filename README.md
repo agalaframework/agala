@@ -14,11 +14,11 @@ The package is [available in Hex](lttps://hex.pm/packages/agala), and can be ins
 
   ```elixir
   def deps do
-    [{:agala, "~> 2.0.1"}]
+    [{:agala, "~> 2.0"}]
   end
   ```
 
-  2. Ensure `agala` is started before your application:
+  1. Ensure `agala` is started before your application:
 
   ```elixir
   def application do
