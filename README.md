@@ -18,7 +18,7 @@ The package is [available in Hex](lttps://hex.pm/packages/agala), and can be ins
   end
   ```
 
-  2. Ensure `agala` is started before your application:
+  1. Ensure `agala` is started before your application:
 
   ```elixir
   def application do
