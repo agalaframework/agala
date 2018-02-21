@@ -19,6 +19,8 @@ defmodule Agala.BotParams do
   * `provider_params` - params, that are needed only for specified `provider`. Agala
     framework does not define any structure for these params, you can find it in your
     `provider`s documentation.
+  * `custom_params` - params, that are needed only for your apps. Agala
+    framework does not define any structure for these params, you define the structure yourself.
   * `private` - sepcial place to put some additional information. These params can be
     precalculated by the internal processes of initiation for your provider, or to cache
     some data. In common situations you should not use it at all, until you are developing
@@ -47,6 +49,7 @@ defmodule Agala.BotParams do
     provider: atom,
     handler: atom,
     provider_params: Map.t,
+    custom_params: Map.t,
     storage: atom,
   }
 
@@ -57,6 +60,7 @@ defmodule Agala.BotParams do
     provider: nil,
     handler: nil,
     provider_params: %{},
+    custom_params: %{},
     storage: Agala.Bot.Storage.Local
   ]
 
