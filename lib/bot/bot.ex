@@ -65,6 +65,6 @@ defmodule Agala.Bot do
       {Agala.Bot.Handler, bot_params},
       {provider.get_receiver(), bot_params},
     ]
-    |> Supervisor.init(strategy: :one_for_one, max_restarts: 1000, max_seconds: 1)
+    |> Supervisor.init(strategy: :one_for_one)
   end
 end
