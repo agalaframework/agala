@@ -22,6 +22,7 @@ defmodule Agala.Mixfile do
 
   def application do
     [
+      mod: {Agala, []},
       extra_applications: [:logger]
     ]
   end
@@ -34,6 +35,11 @@ defmodule Agala.Mixfile do
 
   defp deps do
     [
+      # Production dependencies
+      {:fastglobal, "~> 1.0"},
+      {:amqp, "~> 1.0"},
+      {:poolboy, "~> 1.5"},
+      # Dev and test dependecies
       {:ex_doc, "~> 0.18", only: :dev},
       {:inch_ex,"~> 0.5", only: [:dev, :test, :docs]},
       {:credo, "~> 0.8", only: [:dev, :test]},

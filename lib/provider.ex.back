@@ -1,0 +1,10 @@
+defmodule Agala.Provider do
+  @moduledoc """
+  This behavior describes the interface, that should be implemented for each and every provider for `Agala` framework.
+  """
+
+  @doc """
+  Provider should check and make provider configuration in compile time.
+  """
+  @callback compile_config(module :: atom(), opts :: Keyword.t()) :: map() | no_return()
+end
