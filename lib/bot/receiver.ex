@@ -29,6 +29,7 @@ defmodule Agala.Bot.Receiver do
   TODO: Docs
   """
   @callback get_updates(notify_with :: (message -> :ok), bot_params :: Agala.BotParams.t) :: Agala.BotParams.t
+
   defmacro __using__(_) do
     quote location: :keep do
       use GenServer

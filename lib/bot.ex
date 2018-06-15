@@ -5,7 +5,10 @@ defmodule Agala.Bot do
 
   @behaviour Agala.Bot
 
-  @type name :: atom()
+  @typedoc """
+  Bot is represented by it's name as atom
+  """
+  @type t :: atom()
 
   @doc """
   This function is used to **live reload** bot configuration in runtime after `sys.config` changing.
@@ -40,4 +43,5 @@ defmodule Agala.Bot do
 
     end
   end
+
 end

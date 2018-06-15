@@ -16,6 +16,46 @@ defmodule Agala do
   end
 
   ### Backbone direct calls
+
+  @doc """
+  This method is used to show bot's **receive <-> handle** load.
+
+  * **Active Receivers** can use this information in order to stop retrieving new updates from third-parties.
+  * **Passive Receivers** can use this information to stop serving for a moment until load will not decrease.
+
+  Example:
+
+      # For active receivers
+
+      def get_updates() do
+        # check if service is overloaded
+        case Agala.Backbone.Foo.get_load(MyApp.MyBot) do
+          {:ok, overload} when overload > 1000 ->
+            # This server is overloaded
+            # waiting a bit, to let handlers deal with overload
+            :timer.sleep(10_000)
+            download_updates()
+          {:ok, normal} ->
+            # We should not wait - load is normal
+            download_updates()
+        end
+      end
+
+      # For passive receivers
+      def call(conn, opts) do
+        # check if service is overloaded
+        case Agala.Backbone.Foo.get_load(MyApp.MyBot) do
+          {:ok, overload} when overload > 1000 ->
+            # This server is overloaded
+            # Stop serving
+            send_500_http_error(conn)
+          {:ok, normal} ->
+            # We should not wait - load is normal
+            proceed_update(conn)
+        end
+      end
+  """
+  @spec get_load(bot_name :: Agala.Bot.t()) :: {:ok, integer} | {:error, any()}
   def get_load(bot_name), do: Config.get_backbone().get_load(bot_name)
 
   @doc """

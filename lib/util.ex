@@ -17,4 +17,9 @@ defmodule Agala.Util do
     |> Enum.filter(fn {key, _} -> key == :behaviour end)
     |> Enum.map(fn {_, [value]} -> value end)
   end
+
+  # may be not nessesary
+  # def compile_config(otp_app, module, opts) do
+
+  # end
 end
