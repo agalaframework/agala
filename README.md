@@ -1,6 +1,13 @@
 <p align="center"><img src="extras/logo/horizontal.png" alt="agala" height="150px"></p>
 
-# Agala [![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) [![Travis](https://travis-ci.org/agalaframework/agala.svg?branch=develop)](https://travis-ci.org/agalaframework/agala) [![Deps Status](https://beta.hexfaktor.org/badge/all/github/Virviil/agala.svg?branch=develop)](https://beta.hexfaktor.org/github/Virviil/agala) [![Inline docs](http://inch-ci.org/github/agalaframework/agala.svg)](http://inch-ci.org/github/agalaframework/agala) [![Coverage Status](https://coveralls.io/repos/github/agalaframework/agala/badge.svg?branch=develop)](https://coveralls.io/github/agalaframework/agala?branch=develop)
+[![Hex.pm](https://img.shields.io/hexpm/v/agala.svg)](https://hex.pm/packages/agala) 
+[![Hex.pm](https://img.shields.io/hexpm/dt/agala.svg)](https://hex.pm/packages/agala)
+[![Hex.pm](https://img.shields.io/hexpm/l/agala.svg)](https://hex.pm/packages/agala)
+[![Travis](https://travis-ci.org/agalaframework/agala.svg?branch=develop)](https://travis-ci.org/agalaframework/agala) 
+[![Deps Status](https://beta.hexfaktor.org/badge/all/github/Virviil/agala.svg?branch=develop)](https://beta.hexfaktor.org/github/Virviil/agala) 
+[![Inline docs](http://inch-ci.org/github/agalaframework/agala.svg)](http://inch-ci.org/github/agalaframework/agala) 
+[![Coverage Status](https://coveralls.io/repos/github/agalaframework/agala/badge.svg?branch=develop)](https://coveralls.io/github/agalaframework/agala?branch=develop)
+
 
 Full-featured messaging bot framework.
 
