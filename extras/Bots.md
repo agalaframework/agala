@@ -114,3 +114,6 @@ Next variables are checked during compilation:
 
 * `:chain` - this variable specifies the pipeline to handle incoming events. It should be specified and
   implement `Agala.Chain` behaviour. In other case compilation will rise.
+
+* `:provider` - this variable specifies provider for entire bot. Compilation will rise if bot is not specified,
+  or it's implemented wrong.

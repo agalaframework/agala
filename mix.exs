@@ -59,9 +59,10 @@ defmodule Agala.Mixfile do
       logo: "extras/agala.svg.png",
       extras: [
         "extras/Getting Started.md",
+        "extras/Bots.md",
         "extras/Usage.md",
         "extras/Handlers.md",
-        "extras/General Configuration.md"
+        "extras/General Configuration.md",
       ]
     ]
   end
