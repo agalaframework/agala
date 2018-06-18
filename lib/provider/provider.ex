@@ -31,6 +31,11 @@ defmodule Agala.Provider do
   """
   @callback get_responser() :: atom
 
+  @typedoc """
+  Provider is represented by it's module name
+  """
+  @type t :: atom()
+
   defmacro __using__(_opts) do
     quote location: :keep do
       @behaviour Agala.Provider

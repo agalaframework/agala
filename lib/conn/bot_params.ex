@@ -10,10 +10,11 @@ defmodule Agala.BotParams do
   the message will be finaly sent to the external environment.
 
   So, the params are:
-  * `name` - name for specific bot. You can read about names and why they are so important.
+  * `otp_app` - name for bot defined application
+  * `bot` - name of specific bot module.
   * `provider` - the name of the `provider` which will be used in this bot. You can
     read about them here.
-  * `handler` - handler's pipline, which will work with incomming messages and do all
+  * `chain` - handler's pipline, which will work with incomming messages and do all
     the business logic. Thees modules you will create during your application development.
     You can read about handlers pipline here.
   * `provider_params` - params, that are needed only for specified `provider`. Agala
@@ -44,20 +45,20 @@ defmodule Agala.BotParams do
     private: %{},
     common: %{},
     name: String.t | atom,
+    otp_app: atom(),
     provider: atom,
     handler: atom,
-    provider_params: Map.t,
-    storage: atom,
+    provider_params: Map.t
   }
 
   defstruct [
+    otp_app: nil,
     private: %{},
     common: %{},
     name: nil,
     provider: nil,
     handler: nil,
-    provider_params: %{},
-    storage: Agala.Bot.Storage.Local
+    provider_params: %{}
   ]
 
   @behaviour Access

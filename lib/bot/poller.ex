@@ -17,18 +17,35 @@ defmodule Agala.Bot.Poller do
 
   Provider's poller should be a GenServer realization, that will take two params - Handler module and storage's pid
   """
-  @behaviour Agala.Bot.Poller
 
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
       @behaviour Agala.Bot.Poller
 
-      ## Check config
+      {otp_app, provider, config} = Agala.Bot.Supervisor.compile_config(:poller, __MODULE__, opts)
 
-      use Supervisor
+      @otp_app otp_app
+      @provider provider
+      @config config
 
-      def start_link(arg) do
-        Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
+      def config() do
+        {:ok, config} = Agala.Bot.Supervisor.runtime_config(:poller, :dry_run, __MODULE__, @otp_app, [])
+      end
+
+      def child_spec(opts) do
+        %{
+          id: __MODULE__,
+          start: {__MODULE__, :start_link, [opts]},
+          type: :supervisor
+        }
+      end
+
+      def start_link(opts \\ []) do
+        Agala.Bot.Supervisor.start_link(:poller, __MODULE__, @otp_app, @provider, @config)
+      end
+
+      def stop(pid, timeout \\ 5000) do
+        Supervisor.stop(pid, :normal, timeout)
       end
 
       @impl Supervisor
