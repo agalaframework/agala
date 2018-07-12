@@ -63,7 +63,6 @@ defmodule Agala.Bot.Supervisor do
           opts :: Keyword.t()
         ) :: {:ok, Keyword.t()} | :ignore
   def runtime_config(:poller, type, bot, otp_app, opts) do
-    IO.inspect "Inside runtime config"
     if config = Application.get_env(otp_app, bot, []) do
       config =
         [otp_app: otp_app, bot: bot]
