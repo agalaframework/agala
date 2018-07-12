@@ -37,8 +37,8 @@ defmodule Agala.Mixfile do
     [
       # Production dependencies
       {:fastglobal, "~> 1.0"},
-      {:amqp, "~> 1.0"},
       {:poolboy, "~> 1.5"},
+      {:plug, "~> 1.6"},
       # Dev and test dependecies
       {:ex_doc, "~> 0.18", only: :dev},
       {:inch_ex,"~> 0.5", only: [:dev, :test, :docs]},

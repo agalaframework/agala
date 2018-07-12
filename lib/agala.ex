@@ -4,15 +4,10 @@ defmodule Agala do
   alias Agala.Config
 
   def start(_start_type, _start_args) do
-    # make some configurations
-    Supervisor.start_link(
-      [
-        # starting backbone
-        Agala.Backbone.supervisor()
-      ],
-      strategy: :one_for_one,
-      name: Agala.Application
-    )
+    # Make some configurations
+    Agala.Backbone.supervisor()
+    # |> Kernel.++(another_configuration_map)
+    |> Supervisor.start_link(strategy: :one_for_one, name: Agala.Application)
   end
 
   ### Backbone direct calls

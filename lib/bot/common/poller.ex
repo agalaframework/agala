@@ -16,8 +16,8 @@ defmodule Agala.Bot.Common.Poller do
       defmodule Random.Poller do
         use Agala.Bot.Common.Poller
 
-        def get_updates(_opts) do
-          [:rand.uniform]
+        def get_updates(bot_params) do
+          {[:rand.uniform], bot_params}
         end
       end
   """
@@ -25,7 +25,14 @@ defmodule Agala.Bot.Common.Poller do
   @doc """
   TODO: Docs
   """
-  @callback get_updates(params :: Agala.BotParams.t) :: Agala.BotParams.t
+  @callback get_updates(bot_params :: Agala.BotParams.t()) :: {list(), Agala.BotParams.t()}
+
+  @doc """
+  This function is called inside `init/1` callback of a `GenServer` in order
+  to bootstrap initial params for a bot.
+  `:private` and `:common` params can be modified here
+  """
+  @callback bootstrap(bot_params :: Agala.BotParams.t()) :: {:ok, Agala.BotParams.t()} | {:error, any()}
 
   defmacro __using__(_) do
     quote location: :keep do
@@ -33,38 +40,39 @@ defmodule Agala.Bot.Common.Poller do
       require Logger
       @behaviour Agala.Bot.Poller
 
-      @spec start_link(opts :: Keyword.t()) :: GenServer.on_start
-      def start_link(opts) do
-        bot = Keyword.get(opts, :bot)
-        bot_params = %Agala.BotParams{
-          otp_app: Keyword.get(opts, :otp_app),
-          bot: bot,
-          provider: Keyword.get(opts, :provider),
-          chain: Keyword.get(opts, :chain),
-          provider_params: Keyword.get(opts, :provider_params)
+      def child_spec(opts) do
+        %{
+          id: Module.concat(opts.bot, Poller),
+          start: {__MODULE__, :start_link, [opts]},
+          type: :worker
         }
-        GenServer.start_link(__MODULE__, bot_params, name: Module.concat(bot, Poller))
+      end
+
+      @spec start_link(opts :: Map.t()) :: GenServer.on_start
+      def start_link(opts) do
+        bot_params = struct(Agala.BotParams, opts)
+        GenServer.start_link(__MODULE__, bot_params, name: Module.concat(bot_params.bot, Poller))
       end
 
       @spec init(bot_params :: Agala.BotParams.t) :: {:ok, Agala.BotParams.t}
       def init(bot_params) do
-        Process.register(self(), :"#Agala.Bot.Receiver<#{bot_params.name}>")
         Logger.debug("Starting receiver with params:\n\t#{inspect bot_params}\r")
         Process.send(self(), :loop, [])
-        bot_params.provider.init(bot_params, :receiver)
+        bootstrap(bot_params)
       end
 
       @spec handle_info(:loop, bot_params :: Agala.BotParams.t) :: {:noreply, Agala.BotParams.t}
       def handle_info(:loop, bot_params) do
         Process.send(self(), :loop, [])
         # this callback will be call to asyncronosly push messages to handler
-        notify_with = fn message ->
-          Agala.Bot.Handler.handle(message, bot_params)
-        end
-        new_params = get_updates(notify_with, bot_params)
-        case get_in(new_params, ([:common, :restart])) do
-          true -> {:stop, :normal, new_params}
-          _ -> {:noreply, new_params}
+        {updates, new_bot_params} = get_updates(bot_params)
+        updates
+        |> Enum.each(fn event ->
+          new_bot_params.chain.call(%Agala.Conn{request: event, request_bot_params: new_bot_params}, [])
+        end)
+        case get_in(new_bot_params, ([:common, :restart])) do
+          true -> {:stop, :normal, new_bot_params}
+          _ -> {:noreply, new_bot_params}
         end
       end
       def handle_info(_, state), do: {:noreply, state}

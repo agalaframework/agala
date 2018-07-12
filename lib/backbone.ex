@@ -72,7 +72,8 @@ defmodule Agala.Backbone do
   @doc """
   This method is used to pull available element from the queue, defined by `Agala.Bot`
   """
-  @callback pull(bot_name :: Agala.Bot.name()) :: {:ok, any()} | {:error, :empty} |{:error, any()}
+  @callback pull(bot_name :: Agala.Bot.name()) ::
+              {:ok, any()} | {:error, :empty} | {:error, any()}
 
   # @doc """
   # This method will subscribe caller process to get new events from the bot.
@@ -86,40 +87,49 @@ defmodule Agala.Backbone do
   ### -------------------------------------------------------------------------------------------------------------------------------------------------
 
   @doc """
-  Returns supervision config for specififed backbone
+  Returns supervision config for specififed backbone.
+
+  If the backbone is not specified - returns empty list
   """
-  @spec supervisor() :: atom()
+  @spec supervisor() :: [atom()] | []
   def supervisor() do
     case bake_backbone_config() do
-      {:ok, backbone} -> backbone
+      {:ok, :empty} -> []
+      {:ok, backbone} -> [backbone]
     end
   end
 
   @doc """
-  This function will check backbone configuration. If everything is right - `ok tuple` with `Agala.Backbone` implementation module
-  will be returned. If it's not specified correct - function will rise.
+  This function will check backbone configuration.
+
+  If everything is right - `ok tuple` with `Agala.Backbone` implementation module will be returned.
+  If backbone is not specified -
+
+  If it's not specified correct - function will rise.
   """
-  @spec bake_backbone_config() :: {:ok, t} | no_return()
+  @spec bake_backbone_config() :: {:ok, t} | {:ok, :empty} | no_return()
   def bake_backbone_config() do
     # Checking backbone
-    backbone = Application.get_env(:agala, :backbone, nil)
+    case Application.get_env(:agala, :backbone, nil) do
+      nil ->
+        {:ok, :empty}
 
-    unless backbone do
-      raise ArgumentError, "missing :backbone configuration in config :agala"
+      backbone ->
+        unless Code.ensure_loaded?(backbone) do
+          raise ArgumentError,
+                "backbone #{inspect(backbone)} was not compiled, " <>
+                  "ensure it is correct and it is included as a module in the project"
+        end
+
+        unless Agala.Backbone in Agala.Util.behaviours_list(backbone) do
+          raise ArgumentError,
+                "backbone #{inspect(backbone)} does not implement Agala.Backbone behaviour, " <>
+                  "ensure it is correct and it is included as a module in the project"
+        end
+
+        # All ok. Backing backbone specific config
+        :ok = backbone.bake_backbone_config()
+        {:ok, backbone}
     end
-
-    unless Code.ensure_loaded?(backbone) do
-      raise ArgumentError, "backbone #{inspect backbone} was not compiled, " <>
-                           "ensure it is correct and it is included as a module in the project"
-    end
-
-    unless Agala.Backbone in Agala.Util.behaviours_list(backbone) do
-      raise ArgumentError, "backbone #{inspect backbone} does not implement Agala.Backbone behaviour, " <>
-                           "ensure it is correct and it is included as a module in the project"
-    end
-
-    # All ok. Backing backbone specific config
-    :ok = backbone.bake_backbone_config()
-    {:ok, backbone}
   end
 end

@@ -15,21 +15,21 @@ defmodule Agala.Bot.Poller do
 
   ### Poller inside provider
 
-  Provider's poller should be a GenServer realization, that will take two params - Handler module and storage's pid
+  Provider's poller should be a GenServer realisation, that will take two params - Handler module and storage's pid
   """
 
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
       @behaviour Agala.Bot.Poller
 
-      {otp_app, provider, config} = Agala.Bot.Supervisor.compile_config(:poller, __MODULE__, opts)
+      {otp_app, provider, config} = Agala.Bot.Config.compile_config(:poller, __MODULE__, opts)
 
       @otp_app otp_app
       @provider provider
       @config config
 
       def config() do
-        {:ok, config} = Agala.Bot.Supervisor.runtime_config(:poller, :dry_run, __MODULE__, @otp_app, [])
+        {:ok, config} = Agala.Bot.Supervisor.runtime_config(:poller, :dry_run, __MODULE__, @otp_app, @config)
       end
 
       def child_spec(opts) do
@@ -46,13 +46,6 @@ defmodule Agala.Bot.Poller do
 
       def stop(pid, timeout \\ 5000) do
         Supervisor.stop(pid, :normal, timeout)
-      end
-
-      @impl Supervisor
-      def init(arg) do
-        Supervisor.init([
-          {Agala.Bot.Storage, name: Module.concat(__MODULE__, Storage)}
-        ], strategy: :one_for_one)
       end
     end
   end

@@ -62,13 +62,15 @@ defmodule Agala.Bot.Supervisor do
           otp_app :: atom(),
           opts :: Keyword.t()
         ) :: {:ok, Keyword.t()} | :ignore
-  def runtime_config(_any_mode, type, bot, otp_app, opts) do
+  def runtime_config(:poller, type, bot, otp_app, opts) do
+    IO.inspect "Inside runtime config"
     if config = Application.get_env(otp_app, bot, []) do
       config =
         [otp_app: otp_app, bot: bot]
         |> Keyword.merge(@defaults)
         |> Keyword.merge(config)
-        |> Keyword.merge(opts)
+        |> Enum.into(%{})
+        |> Map.merge(opts)
 
       case bot_init(type, bot, config) do
         {:ok, config} -> {:ok, config}
@@ -120,7 +122,7 @@ defmodule Agala.Bot.Supervisor do
     case runtime_config(:poller, :supervisor, bot, otp_app, opts) do
       {:ok, opts} ->
         children = [
-          provider.child_spec(:poller, bot, opts),
+          {provider.get_bot(:poller), opts},
           {Agala.Bot.Storage, name: Module.concat(bot, Storage)}
         ]
 

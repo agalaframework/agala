@@ -42,12 +42,12 @@ defmodule Agala.BotParams do
   Type, representing `Agala.BotParams` struct.
   """
   @type t :: %Agala.BotParams{
+    otp_app: atom,
     private: %{},
     common: %{},
-    name: String.t | atom,
-    otp_app: atom(),
+    bot: atom,
     provider: atom,
-    handler: atom,
+    chain: atom,
     provider_params: Map.t
   }
 
@@ -55,9 +55,9 @@ defmodule Agala.BotParams do
     otp_app: nil,
     private: %{},
     common: %{},
-    name: nil,
+    bot: nil,
     provider: nil,
-    handler: nil,
+    chain: nil,
     provider_params: %{}
   ]
 

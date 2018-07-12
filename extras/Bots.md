@@ -1,7 +1,8 @@
 ## Bots
 
-**Bots** are main construction mechanism of **Agala** systems. You can define a **Bot**, start it inside your supervision tree
-or define it as a handler to your plugs, and all **API-connected** work will be done by itself.
+**Bots** are main construction mechanism of **Agala** systems. You can define a **Bot**, 
+start it inside your supervision tree or define it as a handler to your plugs, 
+and all **API-connected** work will be done by itself.
 
 ## Long-polling receiving bots
 
@@ -12,6 +13,7 @@ It can be defined as custom module:
 ```elixir
 defmodule MyApp.TelegramReceiver do
   use Agala.Bot.Poller, [
+    otp_app: :my_app,
     provider: Agala.Provider.Telegram,
     chain: MyApp.TelegramChain,
     provider_params: %Agala.Provider.Telegram.Poller.Params{
@@ -29,6 +31,7 @@ Let's for example look at **Telegram** WebHooks receiving bot.
 ```elixir
 defmodule MyApp.TelegramReceiver do
   use Agala.Bot.Plug, [
+    otp_app: :my_app,
     provider: Agala.Provider.Telegram,
     chain: MyApp.TelegramChain,
     provider_params: %Agala.Provider.Telegram.Plug.Params{
