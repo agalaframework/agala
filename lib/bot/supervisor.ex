@@ -121,8 +121,8 @@ defmodule Agala.Bot.Supervisor do
     case runtime_config(:poller, :supervisor, bot, otp_app, opts) do
       {:ok, opts} ->
         children = [
-          {provider.get_bot(:poller), opts},
-          {Agala.Bot.Storage, name: Module.concat(bot, Storage)}
+          {Agala.Bot.Storage, name: Module.concat(bot, Storage)},
+          {provider.get_bot(:poller), opts}
         ]
 
         Supervisor.init(children, strategy: :one_for_one)

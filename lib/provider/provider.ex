@@ -3,18 +3,18 @@ defmodule Agala.Provider do
   Behaviour that defines root structure for Agala provider
   """
 
-  @doc """
-  This function defines name for `Agala.Reciever` module for specific provider.
-  This adds some portion of flexibility for provider creators - the are not forced
-  to follow any naming convention.
+  # @doc """
+  # This function defines names for `Agala.Reciever` module for specific provider.
+  # This adds some portion of flexibility for provider creators - the are not forced
+  # to follow any naming convention.
 
-  ## Examples
+  # ## Examples
 
-      iex> Agala.Provider.Vk.get_receiver
-      Agala.Provider.Vk.Receiver
-      iex> Agala.Provider.Telegram.get_receiver
-      Agala.Provider.Telegram.Receiver
-  """
+  #     iex> Agala.Provider.Vk.get_receiver
+  #     Agala.Provider.Vk.Receiver
+  #     iex> Agala.Provider.Telegram.get_receiver
+  #     Agala.Provider.Telegram.Receiver
+  # """
   @callback get_bot(:poller | :plug | :handler) :: atom
 
   @typedoc """

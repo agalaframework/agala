@@ -62,4 +62,24 @@ defmodule Agala do
   # TODO: Docs and examples
   """
   def pull(bot_name), do: Config.get_backbone().pull(bot_name)
+
+  ### Storage
+
+  @doc """
+  Sets given `value` under given `key` across bot's supervisor lifetime.
+  Can be usefull to store some state across restarting handlers, responsers
+  and receivers.
+  """
+  def set(bot_params, key, value) do
+    Agala.Bot.Storage.set(bot_params.bot, key, value)
+  end
+
+  @doc """
+  Gets the value, stored under the given `key` across bot's supervisor lifetime.
+  Can be usefull to reveal some state across restarting handlers, responsers
+  and receivers.
+  """
+  def get(bot_params, key) do
+    Agala.Bot.Storage.get(bot_params.bot, key)
+  end
 end
