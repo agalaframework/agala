@@ -8,8 +8,8 @@ defmodule Chain.LoopbackTest do
     end
 
     test ": call" do
-      assert %Agala.Conn{responser_name: "test"} =
-        Loopback.call(%Agala.Conn{request_bot_params: %{name: "test"}}, [])
+      assert %Agala.Conn{responser: Test} =
+        Loopback.call(%Agala.Conn{request_bot_params: %{bot: Test}}, [])
     end
   end
 end

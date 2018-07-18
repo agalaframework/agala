@@ -9,7 +9,7 @@ defmodule Agala.ConnTest do
       response: nil,
       halted: false,
       request_bot_params: %Agala.BotParams{},
-      responser_name: "test"
+      responser: Test
       }}
     end
 
@@ -32,15 +32,7 @@ defmodule Agala.ConnTest do
     end
 
     test ": send_to is working properly", %{conn: conn} do
-      assert %{responser_name: "foo"} = Conn.send_to(conn, "foo")
-    end
-
-    test ": with_fallback is working properly", %{conn: conn} do
-      fun = fn conn -> conn.responser_name end
-
-      %{fallback: fun_from_conn} = Conn.with_fallback(conn, fun)
-
-      assert "test" = fun_from_conn.(conn)
+      assert %{responser: Foo} = Conn.send_to(conn, Foo)
     end
 
     test ": assigns is working properly", %{conn: conn} do

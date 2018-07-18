@@ -4,9 +4,9 @@ defmodule Agala.BotParamsTest do
   setup do
     %{bot_params: %Agala.BotParams{
       private: %{},
-      name: "test",
+      bot: Test,
       provider: FooProvider,
-      handler: FooHandler,
+      chain: FooHandler,
       provider_params: nil
     }}
     end
@@ -17,12 +17,12 @@ defmodule Agala.BotParamsTest do
       assert {:ok, FooProvider} = Access.fetch(bot_params, :provider)
       assert {:ok, nil} = Access.fetch(bot_params, :provider_params)
 
-      assert FooHandler = Access.get(bot_params, :handler)
+      assert FooHandler = Access.get(bot_params, :chain)
       assert nil == Access.get(bot_params, :foo)
 
-      assert {"test", %{name: "shmest"}} = Access.get_and_update(bot_params, :name, fn _ -> {"test", "shmest"} end)
+      assert {Test, %{bot: Shmest}} = Access.get_and_update(bot_params, :bot, fn _ -> {Test, Shmest} end)
 
-      assert {"test", %{name: "test"}} = Access.pop(bot_params, :name)
+      assert {Test, %{bot: Test}} = Access.pop(bot_params, :bot)
     end
   end
 end

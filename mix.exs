@@ -1,20 +1,26 @@
-defmodule Agala.Mixfile do
+defmodule Agala.MixProject do
   use Mix.Project
 
   def project do
-    [app: :agala,
-     version: "3.0.0",
-     elixir: "~> 1.6",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     description: description(),
-     elixirc_paths: elixirc_paths(Mix.env),
-     package: package(),
-     aliases: aliases(),
-     test_coverage: [tool: ExCoveralls],
-     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
-     docs: docs(),
-     deps: deps()]
+    [
+      app: :agala,
+      version: "3.0.0",
+      elixir: "~> 1.6",
+      start_permanent: Mix.env() == :prod,
+      description: description(),
+      elixirc_paths: elixirc_paths(Mix.env()),
+      package: package(),
+      aliases: aliases(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+      docs: docs(),
+      deps: deps()
+    ]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
@@ -35,15 +41,11 @@ defmodule Agala.Mixfile do
 
   defp deps do
     [
-      # Production dependencies
-      {:fastglobal, "~> 1.0"},
-      {:poolboy, "~> 1.5"},
-      {:plug, "~> 1.6"},
       # Dev and test dependecies
       {:ex_doc, "~> 0.18", only: :dev},
-      {:inch_ex,"~> 0.5", only: [:dev, :test, :docs]},
+      {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
       {:credo, "~> 0.8", only: [:dev, :test]},
-      {:excoveralls, "~> 0.8", only: :test}
+      {:excoveralls, "~> 0.9", only: :test}
     ]
   end
 
@@ -60,9 +62,10 @@ defmodule Agala.Mixfile do
       extras: [
         "extras/Getting Started.md",
         "extras/Bots.md",
+        "extras/Providers.md",
         "extras/Usage.md",
         "extras/Handlers.md",
-        "extras/General Configuration.md",
+        "extras/General Configuration.md"
       ]
     ]
   end
