@@ -1,12 +1,18 @@
 defmodule Agala.Chain do
   @moduledoc """
   The Chain specification.
+
+
   There are two kind of Chains: function Chains and module Chains.
+
   #### Function Chains
+
   A function Chain is any function that receives a connection and a set of
   options and returns a connection. Its type signature must be:
       (Agala.Conn.t, Agala.Chain.opts) :: Agala.Conn.t
+
   #### Module Chains
+
   A module Chain is an extension of the function Chain. It is a module that must
   export:
     * a `call/2` function with the signature defined above
@@ -28,6 +34,6 @@ defmodule Agala.Chain do
 
   @type opts :: binary | tuple | atom | integer | float | [opts] | %{opts => opts}
 
-  @callback init(opts) :: opts
-  @callback call(Agala.Conn.t, opts) :: Agala.Conn.t
+  @callback init(opts :: opts) :: opts
+  @callback call(conn :: Agala.Conn.t, opts) :: Agala.Conn.t
 end

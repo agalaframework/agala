@@ -1,20 +1,67 @@
 defmodule Agala do
-  @moduledoc """
-  Main framework module. Basic `Application`. Should be started as external application
-  in your `mix.exs` file in order to use **Agala**.
-  """
+  use Application
+
+  alias Agala.Config
+
+  def start(_start_type, _start_args) do
+    # Make some configurations
+    Agala.Backbone.supervisor()
+    # |> Kernel.++(another_configuration_map)
+    |> Supervisor.start_link(strategy: :one_for_one, name: Agala.Application)
+  end
+
+  ### Backbone direct calls
 
   @doc """
-  Function in the global scope. Starts the navigation process of the response.
-  Calling this function will send the response to nesessery bot across the cluster.
+  This method is used to show bot's **receive <-> handle** load.
 
-  Handler's response is automaticly casted to this function.
+  * **Active Receivers** can use this information in order to stop retrieving new updates from third-parties.
+  * **Passive Receivers** can use this information to stop serving for a moment until load will not decrease.
 
-  ## Params
-    * `conn` - `Agala.Conn` with populated `Agala.Conn.Response`.
+  Example:
+
+      # For active receivers
+
+      def get_updates() do
+        # check if service is overloaded
+        case Agala.Backbone.Foo.get_load(MyApp.MyBot) do
+          {:ok, overload} when overload > 1000 ->
+            # This server is overloaded
+            # waiting a bit, to let handlers deal with overload
+            :timer.sleep(10_000)
+            download_updates()
+          {:ok, normal} ->
+            # We should not wait - load is normal
+            download_updates()
+        end
+      end
+
+      # For passive receivers
+      def call(conn, opts) do
+        # check if service is overloaded
+        case Agala.Backbone.Foo.get_load(MyApp.MyBot) do
+          {:ok, overload} when overload > 1000 ->
+            # This server is overloaded
+            # Stop serving
+            send_500_http_error(conn)
+          {:ok, normal} ->
+            # We should not wait - load is normal
+            proceed_update(conn)
+        end
+      end
   """
-  @spec response_with(conn :: Agala.Conn.t) :: :ok
-  defdelegate response_with(conn), to: Agala.Bot.Responser, as: :response
+  @spec get_load(bot_name :: Agala.Bot.t()) :: {:ok, integer} | {:error, any()}
+  def get_load(bot_name), do: Config.get_backbone().get_load(bot_name)
+
+  @doc """
+  # TODO: Docs and examples
+  """
+  def push(bot_name, cid, value), do: Config.get_backbone().push(bot_name, cid, value)
+
+  @doc """
+  # TODO: Docs and examples
+  """
+  def pull(bot_name), do: Config.get_backbone().pull(bot_name)
 
   ### Storage
 
@@ -24,7 +71,7 @@ defmodule Agala do
   and receivers.
   """
   def set(bot_params, key, value) do
-    bot_params.storage.set(bot_params, key, value)
+    Agala.Bot.Storage.set(bot_params.bot, key, value)
   end
 
   @doc """
@@ -33,25 +80,6 @@ defmodule Agala do
   and receivers.
   """
   def get(bot_params, key) do
-    bot_params.storage.get(bot_params, key)
-  end
-
-  @doc """
-  This method provides functionality to send request and get response
-  to bot responser's provider. You can use it in order to call method out of request-response
-  cycle. For example - to get additional parameters from provider's entity.
-
-  ### Examples
-
-      Agala.execute(fn conn -> Users.get(conn, user_ids, fields, name_case) end, bot_params)
-  """
-  @spec execute(fun :: (Agala.Conn.t -> any), bot_params :: Agala.BotParams.t) :: any
-  def execute(fun, bot_params) do
-    {:ok, bot_params} = bot_params
-    |> bot_params.provider.init(:responser)
-
-    fun.(%Agala.Conn{})
-    |> Agala.Conn.send_to(bot_params.name)
-    |> bot_params.provider.get_responser().response(bot_params)
+    Agala.Bot.Storage.get(bot_params.bot, key)
   end
 end

@@ -1,3 +1,9 @@
+### 3.0.0
+
+### Changes
+
+* Sugnificant remainings with bot structure and operation syncronisation.
+
 ### 2.0.2
 
 [BUG] Change Bot's id from string to atom
