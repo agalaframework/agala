@@ -51,7 +51,7 @@ defmodule Agala.MixProject do
 
   defp description do
     """
-    Full featured messaging bot framework.
+    Full featured events processing platform.
     """
   end
 
