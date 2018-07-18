@@ -21,9 +21,7 @@ defmodule Agala.Conn do
     halted: false,
     private: %{},
     request_bot_params: %Agala.BotParams{},
-    responser_name: nil,
-    multi: nil,
-    fallback: nil
+    responser: nil
   ]
 
   @type t :: %Agala.Conn{
@@ -33,9 +31,7 @@ defmodule Agala.Conn do
     halted: boolean,
     private: Map.t,
     request_bot_params: Agala.BotParams.t,
-    responser_name: String.t | Atom,
-    multi: Agala.Conn.Multi.t,
-    fallback: function | Map.t
+    responser: String.t | Atom
   }
 
   @behaviour Access
@@ -75,7 +71,7 @@ defmodule Agala.Conn do
   """
   def send_to(%Agala.Conn{} = conn, name) do
     conn
-    |> Map.put(:responser_name, name)
+    |> Map.put(:responser, name)
   end
 
   @doc """

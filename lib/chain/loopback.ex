@@ -12,20 +12,18 @@ defmodule Agala.Chain.Loopback do
 
         def handle(conn, _opts) do
           # Here, responser already the same, as receiver
-          assert conn.responser_name == conn.request_bot_params.name
+          assert conn.responser == conn.request_bot_params.bot
         end
       end
   """
   import Agala.Conn
 
   @doc false
-  def init(opts) do
-    opts
-  end
+  def init(opts), do: opts
 
   @doc false
   @spec call(conn :: Agala.Conn.t, opts :: any) :: Agala.Conn.t
-  def call(conn = %Agala.Conn{request_bot_params: %{name: name}}, _opts) do
-    send_to(conn, name)
+  def call(conn = %Agala.Conn{request_bot_params: %{bot: bot}}, _opts) do
+    send_to(conn, bot)
   end
 end
