@@ -117,13 +117,13 @@ defmodule Agala.Chain.Builder do
     {fun, meta, [arg, [do: clauses]]} =
       quote do
         case unquote(compile_guards(call, guards)) do
-          %Agala.Conn{halted: true} = conn ->
+          %{halted: true} = conn ->
             unquote(log_halt(chain_type, chain, env, builder_opts))
             conn
-          %Agala.Conn{} = conn ->
-            unquote(acc)
           _ ->
-            raise unquote(error_message)
+            unquote(acc)
+          # _ ->
+          #   raise unquote(error_message)
         end
       end
 
