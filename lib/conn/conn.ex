@@ -78,6 +78,7 @@ defmodule Agala.Conn do
   def send_to(%Agala.Conn{} = conn, name) do
     conn
     |> Map.put(:responser, name)
+    |> Map.put(:responser_name, name)
   end
 
   @doc """
