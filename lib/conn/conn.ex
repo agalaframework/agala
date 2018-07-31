@@ -24,6 +24,7 @@ defmodule Agala.Conn do
     responser: nil,
     responser_name: nil,
     multi: nil,
+    fallback: nil
   ]
 
   @type t :: %Agala.Conn{
@@ -35,7 +36,8 @@ defmodule Agala.Conn do
     request_bot_params: Agala.BotParams.t,
     responser_name: String.t | Atom,
     responser: String.t | Atom,
-    multi: Agala.Conn.Multi.t
+    multi: Agala.Conn.Multi.t,
+    fallback: function | Map.t
   }
 
   @behaviour Access
