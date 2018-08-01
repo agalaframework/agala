@@ -15,7 +15,7 @@ defmodule Agala.Chain.Builder do
         chain_builder_call(conn, opts)
       end
 
-      defoverridable [init: 1, call: 2]
+      defoverridable init: 1, call: 2
 
       import Agala.Conn
       import Agala.Chain.Builder, only: [chain: 1, chain: 2]
@@ -27,7 +27,7 @@ defmodule Agala.Chain.Builder do
 
   @doc false
   defmacro __before_compile__(env) do
-    chains       = Module.get_attribute(env.module, :chains)
+    chains = Module.get_attribute(env.module, :chains)
     builder_opts = Module.get_attribute(env.module, :chain_builder_opts)
 
     {conn, body} = Agala.Chain.Builder.compile(env, chains, builder_opts)
@@ -75,7 +75,8 @@ defmodule Agala.Chain.Builder do
         {Agala.Chain.Head, [], quote(do: a when is_binary(a))}
       ], [])
   """
-  @spec compile(Macro.Env.t, [{chain, Agala.Chain.opts, Macro.t}], Keyword.t) :: {Macro.t, Macro.t}
+  @spec compile(Macro.Env.t(), [{chain, Agala.Chain.opts(), Macro.t()}], Keyword.t()) ::
+          {Macro.t(), Macro.t()}
   def compile(env, pipeline, builder_opts) do
     conn = quote do: conn
     {conn, Enum.reduce(pipeline, conn, &quote_chain(init_chain(&1), &2, env, builder_opts))}
@@ -85,7 +86,7 @@ defmodule Agala.Chain.Builder do
   defp init_chain({chain, opts, guards}) do
     case Atom.to_charlist(chain) do
       ~c"Elixir." ++ _ -> init_module_chain(chain, opts, guards)
-      _                -> init_fun_chain(chain, opts, guards)
+      _ -> init_fun_chain(chain, opts, guards)
     end
   end
 
@@ -95,7 +96,7 @@ defmodule Agala.Chain.Builder do
     if function_exported?(chain, :call, 2) do
       {:module, chain, initialized_opts, guards}
     else
-      raise ArgumentError, message: "#{inspect chain} chain must implement call/2"
+      raise ArgumentError, message: "#{inspect(chain)} chain must implement call/2"
     end
   end
 
@@ -109,21 +110,24 @@ defmodule Agala.Chain.Builder do
   defp quote_chain({chain_type, chain, opts, guards}, acc, env, builder_opts) do
     call = quote_chain_call(chain_type, chain, opts)
 
-    error_message = case chain_type do
-      :module   -> "expected #{inspect chain}.call/2 to return a Agala.Conn"
-      :function -> "expected #{chain}/2 to return a Agala.Conn"
-    end <> ", all chains must receive a connection (conn) and return a connection"
+    error_message =
+      case chain_type do
+        :module -> "expected #{inspect(chain)}.call/2 to return a Agala.Conn"
+        :function -> "expected #{chain}/2 to return a Agala.Conn"
+      end <> ", all chains must receive a connection (conn) and return a connection"
 
     {fun, meta, [arg, [do: clauses]]} =
       quote do
         case unquote(compile_guards(call, guards)) do
-          %{halted: true} = conn ->
+          %Agala.Conn{halted: true} = conn ->
             unquote(log_halt(chain_type, chain, env, builder_opts))
             conn
-          _ ->
+
+          %Agala.Conn{} = conn ->
             unquote(acc)
-          # _ ->
-          #   raise unquote(error_message)
+
+          _ ->
+            raise unquote(error_message)
         end
       end
 
@@ -164,10 +168,11 @@ defmodule Agala.Chain.Builder do
 
   defp log_halt(chain_type, chain, env, builder_opts) do
     if level = builder_opts[:log_on_halt] do
-      message = case chain_type do
-        :module   -> "#{inspect env.module} halted in #{inspect chain}.call/2"
-        :function -> "#{inspect env.module} halted in #{inspect chain}/2"
-      end
+      message =
+        case chain_type do
+          :module -> "#{inspect(env.module)} halted in #{inspect(chain)}.call/2"
+          :function -> "#{inspect(env.module)} halted in #{inspect(chain)}/2"
+        end
 
       quote do
         require Logger
