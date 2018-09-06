@@ -1,61 +1,57 @@
 defmodule Agala do
-  use Application
-  require Logger
+  @moduledoc """
+  Main framework module. Basic `Application`. Should be started as external application
+  in your `mix.exs` file in order to use **Agala**.
+  """
 
+  @doc """
+  Function in the global scope. Starts the navigation process of the response.
+  Calling this function will send the response to nesessery bot across the cluster.
 
-  @default_timeout 1
-  @default_router Agala.Router.Direct
-  @default_handler Agala.Handler.Echo
+  Handler's response is automaticly casted to this function.
 
-  def start(_type, _args) do
-    import Supervisor.Spec, warn: false
+  ## Params
+    * `conn` - `Agala.Conn` with populated `Agala.Conn.Response`.
+  """
+  @spec response_with(conn :: Agala.Conn.t) :: :ok
+  defdelegate response_with(conn), to: Agala.Bot.Responser, as: :response
 
-    token = get_token
-    Logger.info("Starting Agala server...")
-    Logger.info("Defined token: #{token}")
-    # Define workers and child supervisors to be supervised
-    children = [
-      # Starts a worker by calling: Agala.Worker.start_link(arg1, arg2, arg3)
-      # worker(Agala.Worker, [arg1, arg2, arg3]),
-      worker(Agala.Bot.Poller, [%{timeout: get_timeout, offset: 0}]),
-      supervisor(Task.Supervisor, [[name: Agala.Bot.TasksSupervisor]]),
-      supervisor(get_router(), [])
-    ]
+  ### Storage
 
-    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one]
-    Supervisor.start_link(children, opts)
+  @doc """
+  Sets given `value` under given `key` across bot's supervisor lifetime.
+  Can be usefull to store some state across restarting handlers, responsers
+  and receivers.
+  """
+  def set(bot_params, key, value) do
+    bot_params.storage.set(bot_params, key, value)
   end
 
-  def get_timeout do
-    Application.get_env(:agala, :request_timeout) || @default_timeout 
+  @doc """
+  Gets the value, stored under the given `key` across bot's supervisor lifetime.
+  Can be usefull to reveal some state across restarting handlers, responsers
+  and receivers.
+  """
+  def get(bot_params, key) do
+    bot_params.storage.get(bot_params, key)
   end
 
-  def get_router do
-    Application.get_env(:agala, :router) || @default_router
-  end
+  @doc """
+  This method provides functionality to send request and get response
+  to bot responser's provider. You can use it in order to call method out of request-response
+  cycle. For example - to get additional parameters from provider's entity.
 
-  def get_handler do
-    Application.get_env(:agala, :handler) || @default_handler
-  end
+  ### Examples
 
-  def get_token do
-    token_name = Application.get_env(:agala, :token_env)
-    if (is_nil(token_name)) do
-      raise "Invalid token variable name. Please define :agala, :token_name in config.exs"
-    else
-      get_token_from_env(token_name)
-    end
-  end
+      Agala.execute(fn conn -> Users.get(conn, user_ids, fields, name_case) end, bot_params)
+  """
+  @spec execute(fun :: (Agala.Conn.t -> any), bot_params :: Agala.BotParams.t) :: any
+  def execute(fun, bot_params) do
+    {:ok, bot_params} = bot_params
+    |> bot_params.provider.init(:responser)
 
-  defp get_token_from_env(token_name) do
-    token = System.get_env(token_name)
-    if (is_nil(token)) do
-      raise "Invalid token name. Please export token to environment variable with name defined in :agala, :token_name in config.exs"
-    else
-      token
-    end
+    fun.(%Agala.Conn{})
+    |> Agala.Conn.send_to(bot_params.name)
+    |> bot_params.provider.get_responser().response(bot_params)
   end
 end
-

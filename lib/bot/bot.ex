@@ -1,87 +1,70 @@
 defmodule Agala.Bot do
-  use HTTPoison.Base
-  require Logger
+  @moduledoc """
+  This module represents main Bot supervisor.
 
-  @default_router Agala.Router.Direct
+  **Bot** is a complex module, that can retreive information, handle it and send either to recepient
+  or to another Bot module.
 
-  def process_url(url) do
-    "https://api.telegram.org/bot" <> token <> "/" <> url
-  end
+  Defining new **Bot** requires only `name`, `provider` and `handler`.
 
-  defp token, do: System.get_env("TOT_TOKEN")
+  When the **Bot** is starting it will automaticly make supervision tree for next modules:
 
-  def getUpdates(%{timeout: timeout, offset: offset}) do
-    exec_cmd("getUpdates", %{timeout: timeout, offset: offset})
-    |> resolve_updates
-  end
+  * `Agala.Bot.Receiver` - module which gets new data from the recepient defined as a `provider`
+  * `Agala.Bot.Handler` - module which is handling messages, that are incoming to the `bot`
+  * `Agala.Bot.Responser` - module, that converts your application responses into form,
+    acceptable by the recepient
+  * `Agala.Bot.Storage` [**OPTIONALY**] - module with *Storage* behaviour, that helps with
+    keeping cross-crashing data for providers
 
-  def resolve_updates({
-    offset,
-    {
-      :ok,
-      %HTTPoison.Response{
-        status_code: 200,
-        body: %{"ok" => true, "result" => []}
-      }
+  ### Starting your bot
+
+  You can start as many bots as you want. They should be differ from each other only by name.
+  Thus, they can have similar provider, handler and whatever you want. To specify bot instance,
+  use `Agala.BotParams` - they should be passed as an argument to start new bot.
+
+  ### Example
+
+      # Starting 2 bots with different providers:
+      Supervisor.start_link([
+        {Agala.Bot, %{name: "telegram", provider: Agala.Provider.Telegram, handler: ...}},
+        {Agala.Bot, %{name: "vk", provider: Agala.Provider.Vk, handler: ...}},
+      ])
+  """
+  use Supervisor
+
+  @doc false
+  def child_spec(bot_params = %{name: name}) do
+    %{
+      id: :"#Agala.Bot<#{name}>",
+      start: {Agala.Bot, :start_link, [bot_params]},
+      type: :supervisor
     }
+  end
+
+  defp via_tuple(name) do
+    {:global, {:agala, :bot, name}}
+  end
+
+  @doc false
+  def start_link(bot_params) do
+    Supervisor.start_link(__MODULE__, bot_params, name: via_tuple(bot_params.name))
+  end
+
+  @doc false
+  def init(bot_params = %{
+    storage: storage,
+    provider: provider
   }) do
-    offset
+    Process.register(self(), :"#Agala.Bot<#{bot_params.name}>")
+    Code.ensure_loaded(storage)
+    case function_exported?(storage, :child_spec, 1) do
+      true -> [{storage, bot_params}]
+      false -> []
+    end ++ [
+      {provider.get_responser(), bot_params},
+      {Agala.Bot.Handler, bot_params},
+      {provider.get_receiver(), bot_params},
+    ]
+    |> Supervisor.init(strategy: :one_for_one)
   end
-
-  def resolve_updates({
-    _offset,
-    {
-      :ok,
-      %HTTPoison.Response{
-        status_code: 200,
-        body: %{"ok" => true, "result" => result}
-      }
-    }
-  }) do
-    Logger.debug "Response body is:\n #{inspect(result)}"
-    result
-    |> process_messages
-  end
-
-  def resolve_updates({ offset, { :ok, %HTTPoison.Response { status_code: 404 } } } ) do
-    offset
-  end
-
-  def resolve_updates({ offset, { :error, err }}) do
-    Logger.error("#{inspect err}")
-    offset
-  end
-
-  def exec_cmd(cmd, params=%{offset: offset}) do
-    {offset, get(cmd, [], params: params)}
-  end
-
-  def exec_cmd(cmd, params) do
-    get(cmd, [], params: params)
-  end
-
-  def process_response_body(body) do
-     body
-     |> Poison.decode!
-  end
-
-  def process_messages([message]=[%{"update_id"=>offset}]) do
-    process_message(message)
-    #last message, so the offset is moving to +1
-    Logger.debug("Update_id changed to #{offset+1}")
-    offset + 1
-  end
-
-  def process_messages([h|t]) do
-    process_message(h)
-    process_messages(t)
-  end
-
-  def process_message(message) do
-    Task.Supervisor.start_child(Agala.Bot.TasksSupervisor, fn ->
-      Agala.get_router().route(message)
-    end)
-  end
-
 end
-

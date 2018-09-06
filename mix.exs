@@ -3,53 +3,67 @@ defmodule Agala.Mixfile do
 
   def project do
     [app: :agala,
-     version: "0.1.1",
-     elixir: "~> 1.3",
+     version: "2.0.5",
+     elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
+     elixirc_paths: elixirc_paths(Mix.env),
      package: package(),
+     aliases: aliases(),
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
+     docs: docs(),
      deps: deps()]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
   def application do
-    [applications: [:logger, :httpoison, :gproc],
-     mod: {Agala, []}]
+    [
+      extra_applications: [:logger]
+    ]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
+  defp aliases do
+    [
+      test: "test --no-start"
+    ]
+  end
+
   defp deps do
     [
-      {:httpoison, "~> 0.9.2"},
-      {:poison, "~> 3.0"},
-      {:gproc, "~> 0.6.1"},
-      {:ex_doc, ">=0.0.0", only: :dev}
+      {:ex_doc, "~> 0.18", only: :dev},
+      {:inch_ex,"~> 0.5", only: [:dev, :test, :docs]},
+      {:credo, "~> 0.8", only: [:dev, :test]},
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 
   defp description do
     """
-    Full featured Telegram bot framework.
+    Full featured messaging bot framework.
     """
   end
+
+  defp docs do
+    [
+      main: "getting-started",
+      logo: "extras/agala.svg.png",
+      extras: [
+        "extras/Getting Started.md",
+        "extras/Usage.md"
+      ]
+    ]
+  end
+
   defp package do
     [
-      maintainers: ["Dmitry Rubinstein", "Vladimir Barsukov"],
+      maintainers: ["Dmitry Rubinstein"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/virviil/agala"},
-      files: ~w(mix.exs README* lib)
+      links: %{"GitHub" => "https://github.com/agalaframework/agala"},
+      files: ~w(mix.exs README* CHANGELOG* lib)
     ]
   end
 end
-

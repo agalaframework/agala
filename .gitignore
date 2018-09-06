@@ -9,6 +9,8 @@
 
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc
+# InchCI docs
+/docs
 
 # If the VM crashes, it generates a dump, let's ignore it too.
 erl_crash.dump
@@ -18,3 +20,17 @@ erl_crash.dump
 
 # Ignore environment files
 *.env
+
+# Ignore script to run testing server
+/bin/run
+
+
+# Install repository
+/installer/_build
+/installer/cover
+/installer/deps
+/installer/doc
+/installer/erl_crash.dump
+
+# ElixirLS
+/.elixir_ls

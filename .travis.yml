@@ -1,8 +1,12 @@
 sudo: false
 language: elixir
 elixir:
-  - 1.3.0
+  - 1.5.2
 otp_release:
-  - 19.0
+  - 20.1
 env:
-  - TOT_TOKEN = "test-token"
+  - MIX_ENV=test
+script: mix coveralls.travis
+after_script:
+  - mix deps.get --only docs
+  - MIX_ENV=docs mix inch.report
