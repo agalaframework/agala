@@ -4,7 +4,7 @@ defmodule Agala.MixProject do
   def project do
     [
       app: :agala,
-      version: "3.0.0",
+      version: "3.1.0",
       elixir: "~> 1.6",
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -41,17 +41,20 @@ defmodule Agala.MixProject do
 
   defp deps do
     [
+      # Working deps
+      {:plug, "~> 1.6", optional: true},
+      {:swarmglobal, github: "virviil/swarmglobal"},
       # Dev and test dependecies
-      {:ex_doc, "~> 0.18", only: :dev},
-      {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
-      {:credo, "~> 0.8", only: [:dev, :test]},
-      {:excoveralls, "~> 0.9", only: :test}
+      {:ex_doc, "~> 0.19", only: :dev},
+      {:inch_ex, "~> 1.0", only: [:dev, :test, :docs]},
+      {:credo, "~> 0.10", only: [:dev, :test]},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 
   defp description do
     """
-    Full featured events processing platform.
+    Full featured events processing platform
     """
   end
 
