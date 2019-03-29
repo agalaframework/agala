@@ -22,7 +22,7 @@ The package is [available in Hex](lttps://hex.pm/packages/agala), and can be ins
 
   ```elixir
   def deps do
-    [{:agala, "~> 2.0"}]
+    [{:agala, "~> 3.0"}]
   end
   ```
 
