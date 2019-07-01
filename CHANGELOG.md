@@ -1,3 +1,9 @@
+# 2.5.1
+
+[Features]
+
+External config added
+
 ### 2.0.2
 
 [BUG] Change Bot's id from string to atom
