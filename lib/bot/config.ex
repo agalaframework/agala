@@ -7,14 +7,21 @@ defmodule Agala.Bot.Config do
   def compile_config(mode, bot, opts) when mode in [:poller, :plug] do
     otp_app = Keyword.fetch!(opts, :otp_app)
 
-  config =
-    Application.get_env(otp_app, :external_cfg)
-    |> case do
-      nil -> Application.get_env(otp_app, bot, [])
-      path ->
-        {data, _} = Mix.Config.eval!(path)
-        data[otp_app][bot]
-    end
+    config =
+      Application.get_env(otp_app, :external_cfg)
+      |> case do
+        nil ->
+          Application.get_env(otp_app, bot, [])
+
+        path ->
+          {data, _} = Mix.Config.eval!(path)
+
+          data[otp_app][bot]
+          |> case do
+            nil -> Application.get_env(otp_app, bot, [])
+            res -> res
+          end
+      end
 
     config = Keyword.merge(opts, config) |> Keyword.put(:bot, bot) |> Enum.into(%{})
 
