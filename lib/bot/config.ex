@@ -8,19 +8,12 @@ defmodule Agala.Bot.Config do
     otp_app = Keyword.fetch!(opts, :otp_app)
 
     config =
-      Application.get_env(otp_app, :external_cfg)
-      |> case do
-        nil ->
-          Application.get_env(otp_app, bot, [])
-
-        path ->
-          {data, _} = Mix.Config.eval!(path)
-
-          data[otp_app][bot]
-          |> case do
-            nil -> Application.get_env(otp_app, bot, [])
-            res -> res
-          end
+      with path when not is_nil(path) <- Application.get_env(otp_app, :external_cfg),
+           {data, _} <- Mix.Config.eval!(path),
+           bot_config when not is_nil(bot_config) <- get_in(data, [otp_app, bot]) do
+        bot_config
+      else
+        _ -> Application.get_env(otp_app, bot, [])
       end
 
     config = Keyword.merge(opts, config) |> Keyword.put(:bot, bot) |> Enum.into(%{})
