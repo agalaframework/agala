@@ -44,7 +44,7 @@ defmodule Agala.MixProject do
       # Dev and test dependecies
       {:ex_doc, "~> 0.18", only: :dev},
       {:inch_ex, "~> 0.5", only: [:dev, :test, :docs]},
-      {:credo, "~> 0.8", only: [:dev, :test]},
+      {:credo, "~> 1.1", only: [:dev, :test]},
       {:excoveralls, "~> 0.9", only: :test}
     ]
   end
